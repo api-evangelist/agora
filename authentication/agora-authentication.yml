@@ -1,0 +1,37 @@
+generated: '2026-07-17'
+method: searched
+source: openapi/agora-openapi-original.yml
+docs: https://docs.agora.finance/api/authentication
+summary:
+  types: [http]
+  http_schemes: [bearer]
+  model: api-key-exchanged-for-session-jwt
+  public_endpoints: [GET /v0/metrics, GET /v0/metrics/total-supply, GET /v0/metrics/circulating-supply]
+schemes:
+  - name: accessKey
+    type: http
+    scheme: bearer
+    description: >-
+      Long-lived Agora access key (API key), sent as `Authorization: Bearer <accessKey>`.
+      Used ONLY by POST /v0/auth/token to mint a short-lived session JWT. API keys are
+      issued by Agora on request during Beta.
+    sources: [openapi/agora-openapi-original.yml]
+  - name: sessionJwt
+    type: http
+    scheme: bearer
+    bearerFormat: JWT
+    description: >-
+      Short-lived session JWT returned by POST /v0/auth/token, sent as
+      `Authorization: Bearer <sessionJwt>` on every subsequent authenticated request.
+      Valid for 15 minutes (fixed TTL, not echoed in the response). RS256-signed;
+      issuer https://api.agora.finance. No refresh-token endpoint — re-exchange the
+      API key before expiry.
+    sources: [openapi/agora-openapi-original.yml]
+flow: >-
+  1. POST /v0/auth/token with Authorization: Bearer <API_KEY> (no body) -> { sessionJwt }.
+  2. Attach the JWT as Authorization: Bearer <sessionJwt> for 15 minutes.
+  3. On 401 with context.reason=token_expired, re-exchange the API key.
+error_401_reasons: [missing_header, invalid_token, token_expired, token_revoked, unknown_tenant, missing_claim]
+notes: >-
+  Two http-bearer schemes with distinct roles. Public metrics endpoints require no
+  authentication; Accounts, Routes, and Transactions require a valid session JWT.
