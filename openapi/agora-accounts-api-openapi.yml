@@ -1,0 +1,1169 @@
+openapi: 3.1.0
+info:
+  title: Endpoints Accounts API
+  version: 1.0.0
+servers:
+- url: https://api.agora.finance
+  description: Production
+tags:
+- name: Accounts
+paths:
+  /v0/accounts:
+    get:
+      operationId: get
+      summary: List Accounts
+      description: "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nList every account registered to the authenticated organization. An account is either a bank account (fiat source/destination) or a blockchain wallet (on-chain source/destination); both appear in the same paginated list, distinguished by the `kind` discriminator.\n\nWallet accounts carry a `networks` array, one entry per network, each with its `entitlements` and their status (see [Wallet entitlements](/api/endpoints/accounts/overview#wallet-entitlements)). Bank accounts return the full `accountNumber` alongside `routingNumber`, `bankName`, and the `beneficiary` name on the wire.\n"
+      tags:
+      - Accounts
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      - name: Authorization
+        in: header
+        description: 'Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accounts_get_Response_200'
+        '400':
+          description: One or more request parameters are invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_400_parameter_invalid'
+        '401':
+          description: Authentication is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_401_unauthorized'
+        '403':
+          description: The account is not eligible for the requested route direction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_403_account_not_eligible_forbidden'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_404_not_found'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_429_rate_limit_exceeded'
+        '500':
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_500_internal_error'
+    post:
+      operationId: create
+      summary: Register an Account
+      description: "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nRegister a customer-owned account under the authenticated organization. Set `kind` to `wallet` to register a blockchain address (supply the `networks` it should be registered on; EVM hex is normalized to lowercase, Solana base58 is kept verbatim) or `bank` to register a fiat account.\n\nRegistering a wallet starts `mint` and (where supported) `instant_settlement` entitlements on the requested networks. See [Wallet entitlements](/api/endpoints/accounts/overview#wallet-entitlements) for how they are approved and when the wallet is usable. Registering the same address on a network it already holds returns `409`.\n"
+      tags:
+      - Accounts
+      parameters:
+      - name: Authorization
+        in: header
+        description: 'Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accounts_create_Response_201'
+        '400':
+          description: One or more request parameters are invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_400_parameter_invalid'
+        '401':
+          description: Authentication is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_401_unauthorized'
+        '403':
+          description: The account is not eligible for the requested route direction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_403_account_not_eligible_forbidden'
+        '404':
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_404_not_found'
+        '409':
+          description: An account with these details already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_409_account_already_exists'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_429_rate_limit_exceeded'
+        '500':
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_500_internal_error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accounts_create_Request'
+  /v0/accounts/{accountId}:
+    put:
+      operationId: update
+      summary: Update an Account
+      description: "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nApply a single change to an existing account, selected by `operation`:\n\n- **`setName`**: rename a wallet or bank account (send `name`).\n- **`addNetwork`**: register an existing wallet on an additional `network`, which starts a new `mint` entitlement there (see [Wallet entitlements](/api/endpoints/accounts/overview#wallet-entitlements)). Rejected with `409` if the address is already registered there.\n- **`requestEntitlement`**: request an `entitlement` (currently `instant_settlement`) on an existing wallet `network`. Returns `400` if the entitlement isn't requestable for that network. See [Wallet entitlements](/api/endpoints/accounts/overview#wallet-entitlements) for how requests are reviewed and approved.\n\nThe response is the full updated account, same shape as `GET /v0/accounts`.\n"
+      tags:
+      - Accounts
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: 'Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accounts_update_Response_200'
+        '400':
+          description: This entitlement cannot be requested in its current state.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_400_entitlement_not_requestable_parameter_invalid'
+        '401':
+          description: Authentication is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_401_unauthorized'
+        '403':
+          description: The account is not eligible for the requested route direction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_403_account_not_eligible_forbidden'
+        '404':
+          description: Account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_404_account_not_found_not_found'
+        '409':
+          description: An account with these details already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_409_account_already_exists'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_429_rate_limit_exceeded'
+        '500':
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_500_internal_error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                operation:
+                  $ref: '#/components/schemas/V0AccountsAccountIdPutRequestBodyContentApplicationJsonSchemaOperation'
+                name:
+                  type: string
+                  description: User-set label. Free-form; max 200 characters.
+                network:
+                  $ref: '#/components/schemas/V0AccountsAccountIdPutRequestBodyContentApplicationJsonSchemaNetwork'
+                entitlement:
+                  $ref: '#/components/schemas/V0AccountsAccountIdPutRequestBodyContentApplicationJsonSchemaEntitlement'
+                  description: Entitlement to request. Moves to pending_approval; granting stays Agora-side.
+              required:
+              - operation
+components:
+  schemas:
+    V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItems:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItemsType'
+          description: Entitlement type. `mint` is the mint capability gated by the per-chain compliance scan; `instant_settlement` is the instant-settlement whitelist; `rewards` is rewards eligibility.
+        status:
+          $ref: '#/components/schemas/V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItemsStatus'
+          description: 'Entitlement status. `pending_approval` is requested and under Agora review; `approved` is active. `conditionally_approved` applies to `mint` only: the address is usable now (screening and whitelisting are auto-initiated) while final approval is still pending internally. `instant_settlement` and `rewards` stay `pending_approval` until reviewed. The API never auto-approves.'
+      required:
+      - type
+      - status
+      title: V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItems
+    ErrorResponse400ParameterInvalidContext:
+      type: object
+      properties:
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponse400ParameterInvalidContextIssuesItems'
+      required:
+      - issues
+      title: ErrorResponse400ParameterInvalidContext
+    V0AccountsGetResponsesContentApplicationJsonSchemaDataItems:
+      oneOf:
+      - $ref: '#/components/schemas/V0AccountsGetResponsesContentApplicationJsonSchemaDataItems0'
+      - $ref: '#/components/schemas/V0AccountsGetResponsesContentApplicationJsonSchemaDataItems1'
+      title: V0AccountsGetResponsesContentApplicationJsonSchemaDataItems
+    ErrorResponse_401_unauthorized:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContext'
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_401_unauthorized
+    ErrorResponse400EntitlementNotRequestableParameterInvalidCode:
+      type: string
+      enum:
+      - entitlement_not_requestable
+      - parameter_invalid
+      title: ErrorResponse400EntitlementNotRequestableParameterInvalidCode
+    ErrorResponse400ParameterInvalidContextIssuesItems:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+      required:
+      - field
+      - message
+      title: ErrorResponse400ParameterInvalidContextIssuesItems
+    ErrorResponse401UnauthorizedCode:
+      type: string
+      enum:
+      - unauthorized
+      title: ErrorResponse401UnauthorizedCode
+    ErrorResponse_400_entitlement_not_requestable_parameter_invalid:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse400EntitlementNotRequestableParameterInvalidCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponse400EntitlementNotRequestableParameterInvalidContext'
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_400_entitlement_not_requestable_parameter_invalid
+    AccountsCreateResponse2010:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Stable UUID identifying this account; safe to cache or display.
+        address:
+          type: string
+          description: On-chain address. EIP-55 checksummed for EVM (`ethereum`), base58 for Solana.
+        addressFormat:
+          $ref: '#/components/schemas/V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0AddressFormat'
+          description: Address syntax family. `ethereum` covers every EVM chain (Ethereum, Base, Polygon, Arbitrum, etc.); per-chain authorization is enforced separately via the account's chain entitlements.
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO-8601 UTC timestamp when this address was added to the org.
+        kind:
+          $ref: '#/components/schemas/V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0Kind'
+          description: 'Discriminator: this is a customer-owned blockchain address.'
+        name:
+          type: string
+          description: User-set label. Free-form; may be empty if the user hasn't set one.
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItems'
+          description: The networks this address is registered on, each with its per-type entitlement states.
+      required:
+      - id
+      - address
+      - addressFormat
+      - createdAt
+      - kind
+      - name
+      - networks
+      description: Customer-owned blockchain address (CustomerAddress).
+      title: AccountsCreateResponse2010
+    ErrorResponse400EntitlementNotRequestableParameterInvalidContextIssuesItems:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+      required:
+      - field
+      - message
+      title: ErrorResponse400EntitlementNotRequestableParameterInvalidContextIssuesItems
+    ErrorResponse404AccountNotFoundNotFoundCode:
+      type: string
+      enum:
+      - account_not_found
+      - not_found
+      title: ErrorResponse404AccountNotFoundNotFoundCode
+    ErrorResponse409AccountAlreadyExistsCode:
+      type: string
+      enum:
+      - account_already_exists
+      title: ErrorResponse409AccountAlreadyExistsCode
+    V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0AddressFormat:
+      type: string
+      enum:
+      - ethereum
+      - solana
+      description: Address syntax family. `ethereum` covers every EVM chain (Ethereum, Base, Polygon, Arbitrum, etc.); per-chain authorization is enforced separately via the account's chain entitlements.
+      title: V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0AddressFormat
+    V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf1Currency:
+      type: string
+      enum:
+      - usd
+      description: Settlement currency. Today only `usd`; will extend as new currencies launch.
+      title: V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf1Currency
+    V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItems:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItemsType'
+          description: Entitlement type. `mint` is the mint capability gated by the per-chain compliance scan; `instant_settlement` is the instant-settlement whitelist; `rewards` is rewards eligibility.
+        status:
+          $ref: '#/components/schemas/V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItemsStatus'
+          description: 'Entitlement status. `pending_approval` is requested and under Agora review; `approved` is active. `conditionally_approved` applies to `mint` only: the address is usable now (screening and whitelisting are auto-initiated) while final approval is still pending internally. `instant_settlement` and `rewards` stay `pending_approval` until reviewed. The API never auto-approves.'
+      required:
+      - type
+      - status
+      title: V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItems
+    V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItemsStatus:
+      type: string
+      enum:
+      - approved
+      - conditionally_approved
+      - pending_approval
+      - pending_removal
+      - rejected
+      - removed
+      description: 'Entitlement status. `pending_approval` is requested and under Agora review; `approved` is active. `conditionally_approved` applies to `mint` only: the address is usable now (screening and whitelisting are auto-initiated) while final approval is still pending internally. `instant_settlement` and `rewards` stay `pending_approval` until reviewed. The API never auto-approves.'
+      title: V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItemsStatus
+    V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf1Kind:
+      type: string
+      enum:
+      - bank
+      description: 'Discriminator: this is a customer-owned bank account.'
+      title: V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf1Kind
+    accounts_update_Response_200:
+      oneOf:
+      - $ref: '#/components/schemas/AccountsUpdateResponse2000'
+      - $ref: '#/components/schemas/AccountsUpdateResponse2001'
+      title: accounts_update_Response_200
+    ErrorResponse_409_account_already_exists:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse409AccountAlreadyExistsCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_409_account_already_exists
+    V0AccountsPostRequestBodyContentApplicationJsonSchemaOneOf1Kind:
+      type: string
+      enum:
+      - bank
+      description: 'Discriminator: register a customer-owned bank account.'
+      title: V0AccountsPostRequestBodyContentApplicationJsonSchemaOneOf1Kind
+    AccountsCreateRequest0:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/V0AccountsPostRequestBodyContentApplicationJsonSchemaOneOf0Kind'
+          description: 'Discriminator: register a customer-owned blockchain address.'
+        address:
+          type: string
+          description: On-chain address to register. EVM hex is normalized to lowercase; Solana base58 is kept verbatim.
+        name:
+          type: string
+          description: User-set label. Free-form; max 200 characters.
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0AccountsPostRequestBodyContentApplicationJsonSchemaOneOf0NetworksItems'
+          description: Networks to register this address on. Each must be compatible with the address format.
+      required:
+      - kind
+      - address
+      - networks
+      title: AccountsCreateRequest0
+    V0AccountsGetResponsesContentApplicationJsonSchemaDataItems0:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Stable UUID identifying this account; safe to cache or display.
+        address:
+          type: string
+          description: On-chain address. EIP-55 checksummed for EVM (`ethereum`), base58 for Solana.
+        addressFormat:
+          $ref: '#/components/schemas/V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0AddressFormat'
+          description: Address syntax family. `ethereum` covers every EVM chain (Ethereum, Base, Polygon, Arbitrum, etc.); per-chain authorization is enforced separately via the account's chain entitlements.
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO-8601 UTC timestamp when this address was added to the org.
+        kind:
+          $ref: '#/components/schemas/V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0Kind'
+          description: 'Discriminator: this is a customer-owned blockchain address.'
+        name:
+          type: string
+          description: User-set label. Free-form; may be empty if the user hasn't set one.
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItems'
+          description: The networks this address is registered on, each with its per-type entitlement states.
+      required:
+      - id
+      - address
+      - addressFormat
+      - createdAt
+      - kind
+      - name
+      - networks
+      description: Customer-owned blockchain address (CustomerAddress).
+      title: V0AccountsGetResponsesContentApplicationJsonSchemaDataItems0
+    accounts_get_Response_200:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0AccountsGetResponsesContentApplicationJsonSchemaDataItems'
+          description: Page of accounts, newest first, tie-broken by id.
+        nextCursor:
+          type:
+          - string
+          - 'null'
+          description: Opaque cursor for the next page. Pass back verbatim as the `cursor` query param to fetch the next page; null when no more results.
+      required:
+      - data
+      - nextCursor
+      title: accounts_get_Response_200
+    ErrorResponse_404_account_not_found_not_found:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse404AccountNotFoundNotFoundCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_404_account_not_found_not_found
+    ErrorResponse401UnauthorizedContextReason:
+      type: string
+      enum:
+      - invalid_token
+      - missing_claim
+      - missing_header
+      - token_expired
+      - token_revoked
+      - unknown_tenant
+      title: ErrorResponse401UnauthorizedContextReason
+    V0AccountsAccountIdPutRequestBodyContentApplicationJsonSchemaEntitlement:
+      type: string
+      enum:
+      - instant_settlement
+      description: Entitlement to request. Moves to pending_approval; granting stays Agora-side.
+      title: V0AccountsAccountIdPutRequestBodyContentApplicationJsonSchemaEntitlement
+    V0AccountsGetResponsesContentApplicationJsonSchemaDataItems1:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Stable UUID identifying this account; safe to cache or display.
+        accountNumber:
+          type: string
+          description: Full bank account number.
+        bankName:
+          type: string
+          description: Name of the receiving bank.
+        beneficiary:
+          type: string
+          description: 'Account-holder name on the wire. Part of the account''s identity: distinguishes accounts that share a routing + account number (e.g. omnibus/custodian accounts holding several funds under one account number).'
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO-8601 UTC timestamp when this account was added to the org.
+        currency:
+          $ref: '#/components/schemas/V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf1Currency'
+          description: Settlement currency. Today only `usd`; will extend as new currencies launch.
+        kind:
+          $ref: '#/components/schemas/V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf1Kind'
+          description: 'Discriminator: this is a customer-owned bank account.'
+        name:
+          type: string
+          description: User-set label. Free-form; may be empty if the user hasn't set one.
+        routingNumber:
+          type: string
+          description: ABA routing number identifying the receiving bank. A public bank identifier, returned in full.
+      required:
+      - id
+      - accountNumber
+      - bankName
+      - beneficiary
+      - createdAt
+      - currency
+      - kind
+      - name
+      - routingNumber
+      description: Customer-owned bank account (WireDetail, status=verified).
+      title: V0AccountsGetResponsesContentApplicationJsonSchemaDataItems1
+    ErrorResponse404NotFoundCode:
+      type: string
+      enum:
+      - not_found
+      title: ErrorResponse404NotFoundCode
+    V0AccountsPostRequestBodyContentApplicationJsonSchemaOneOf0NetworksItems:
+      type: string
+      enum:
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - fraxtal
+      - gnosis
+      - immutable
+      - injective
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      - sui
+      description: Blockchain network identifier. Use this to filter or group supply data by chain. Values are stable; new networks may be added but existing ones will not be renamed.
+      title: V0AccountsPostRequestBodyContentApplicationJsonSchemaOneOf0NetworksItems
+    ErrorResponse_400_parameter_invalid:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse400ParameterInvalidCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponse400ParameterInvalidContext'
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_400_parameter_invalid
+    AccountsCreateResponse2011:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Stable UUID identifying this account; safe to cache or display.
+        accountNumber:
+          type: string
+          description: Full bank account number.
+        bankName:
+          type: string
+          description: Name of the receiving bank.
+        beneficiary:
+          type: string
+          description: 'Account-holder name on the wire. Part of the account''s identity: distinguishes accounts that share a routing + account number (e.g. omnibus/custodian accounts holding several funds under one account number).'
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO-8601 UTC timestamp when this account was added to the org.
+        currency:
+          $ref: '#/components/schemas/V0AccountsPostResponsesContentApplicationJsonSchemaOneOf1Currency'
+          description: Settlement currency. Today only `usd`; will extend as new currencies launch.
+        kind:
+          $ref: '#/components/schemas/V0AccountsPostResponsesContentApplicationJsonSchemaOneOf1Kind'
+          description: 'Discriminator: this is a customer-owned bank account.'
+        name:
+          type: string
+          description: User-set label. Free-form; may be empty if the user hasn't set one.
+        routingNumber:
+          type: string
+          description: ABA routing number identifying the receiving bank. A public bank identifier, returned in full.
+      required:
+      - id
+      - accountNumber
+      - bankName
+      - beneficiary
+      - createdAt
+      - currency
+      - kind
+      - name
+      - routingNumber
+      description: Customer-owned bank account (WireDetail, status=verified).
+      title: AccountsCreateResponse2011
+    V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItemsEntitlementsItemsStatus:
+      type: string
+      enum:
+      - approved
+      - conditionally_approved
+      - pending_approval
+      - pending_removal
+      - rejected
+      - removed
+      description: 'Entitlement status. `pending_approval` is requested and under Agora review; `approved` is active. `conditionally_approved` applies to `mint` only: the address is usable now (screening and whitelisting are auto-initiated) while final approval is still pending internally. `instant_settlement` and `rewards` stay `pending_approval` until reviewed. The API never auto-approves.'
+      title: V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItemsEntitlementsItemsStatus
+    V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItems:
+      type: object
+      properties:
+        chain:
+          $ref: '#/components/schemas/V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItemsChain'
+          description: Network the wallet is registered on (kebab-case public network id).
+        entitlements:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItems'
+          description: Entitlement states on this network, one per type the wallet holds on the chain.
+      required:
+      - chain
+      - entitlements
+      description: Per-network entitlement state for the wallet.
+      title: V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItems
+    accounts_create_Response_201:
+      oneOf:
+      - $ref: '#/components/schemas/AccountsCreateResponse2010'
+      - $ref: '#/components/schemas/AccountsCreateResponse2011'
+      title: accounts_create_Response_201
+    AccountsUpdateResponse2000:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Stable UUID identifying this account; safe to cache or display.
+        address:
+          type: string
+          description: On-chain address. EIP-55 checksummed for EVM (`ethereum`), base58 for Solana.
+        addressFormat:
+          $ref: '#/components/schemas/V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0AddressFormat'
+          description: Address syntax family. `ethereum` covers every EVM chain (Ethereum, Base, Polygon, Arbitrum, etc.); per-chain authorization is enforced separately via the account's chain entitlements.
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO-8601 UTC timestamp when this address was added to the org.
+        kind:
+          $ref: '#/components/schemas/V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0Kind'
+          description: 'Discriminator: this is a customer-owned blockchain address.'
+        name:
+          type: string
+          description: User-set label. Free-form; may be empty if the user hasn't set one.
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItems'
+          description: The networks this address is registered on, each with its per-type entitlement states.
+      required:
+      - id
+      - address
+      - addressFormat
+      - createdAt
+      - kind
+      - name
+      - networks
+      description: Customer-owned blockchain address (CustomerAddress).
+      title: AccountsUpdateResponse2000
+    V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf1Currency:
+      type: string
+      enum:
+      - usd
+      description: Settlement currency. Today only `usd`; will extend as new currencies launch.
+      title: V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf1Currency
+    ErrorResponse403AccountNotEligibleForbiddenCode:
+      type: string
+      enum:
+      - account_not_eligible
+      - forbidden
+      title: ErrorResponse403AccountNotEligibleForbiddenCode
+    V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0Kind:
+      type: string
+      enum:
+      - wallet
+      description: 'Discriminator: this is a customer-owned blockchain address.'
+      title: V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0Kind
+    AccountsCreateRequest1:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/V0AccountsPostRequestBodyContentApplicationJsonSchemaOneOf1Kind'
+          description: 'Discriminator: register a customer-owned bank account.'
+        accountNumber:
+          type: string
+          description: Bank account number. 6-100 uppercase letters and digits; embedded spaces are ignored.
+        bankName:
+          type: string
+          description: Name of the receiving bank.
+        beneficiary:
+          type: string
+          description: 'Account-holder name on the wire. Part of the account''s identity (with routing + account number): omnibus/custodian accounts share one account number across beneficiaries, so this disambiguates them.'
+        name:
+          type: string
+          description: User-set label. Free-form; max 200 characters.
+        routingNumber:
+          type: string
+          description: ABA routing number (US) or SWIFT/BIC (international). 6-100 uppercase letters and digits; embedded spaces are ignored.
+      required:
+      - kind
+      - accountNumber
+      - bankName
+      - beneficiary
+      - routingNumber
+      title: AccountsCreateRequest1
+    V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItemsEntitlementsItemsType:
+      type: string
+      enum:
+      - instant_settlement
+      - mint
+      - rewards
+      description: Entitlement type. `mint` is the mint capability gated by the per-chain compliance scan; `instant_settlement` is the instant-settlement whitelist; `rewards` is rewards eligibility.
+      title: V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItemsEntitlementsItemsType
+    ErrorResponse401UnauthorizedContext:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContextReason'
+      required:
+      - reason
+      title: ErrorResponse401UnauthorizedContext
+    V0AccountsAccountIdPutRequestBodyContentApplicationJsonSchemaNetwork:
+      type: string
+      enum:
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - fraxtal
+      - gnosis
+      - immutable
+      - injective
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      - sui
+      title: V0AccountsAccountIdPutRequestBodyContentApplicationJsonSchemaNetwork
+    ErrorResponse_404_not_found:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse404NotFoundCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_404_not_found
+    V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItemsChain:
+      type: string
+      enum:
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - fraxtal
+      - gnosis
+      - immutable
+      - injective
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      - sui
+      description: Network the wallet is registered on (kebab-case public network id).
+      title: V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItemsChain
+    ErrorResponse_429_rate_limit_exceeded:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse429RateLimitExceededCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_429_rate_limit_exceeded
+    V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf1Kind:
+      type: string
+      enum:
+      - bank
+      description: 'Discriminator: this is a customer-owned bank account.'
+      title: V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf1Kind
+    V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItems:
+      type: object
+      properties:
+        chain:
+          $ref: '#/components/schemas/V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItemsChain'
+          description: Network the wallet is registered on (kebab-case public network id).
+        entitlements:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItems'
+          description: Entitlement states on this network, one per type the wallet holds on the chain.
+      required:
+      - chain
+      - entitlements
+      description: Per-network entitlement state for the wallet.
+      title: V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItems
+    V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0Kind:
+      type: string
+      enum:
+      - wallet
+      description: 'Discriminator: this is a customer-owned blockchain address.'
+      title: V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0Kind
+    ErrorResponse400ParameterInvalidCode:
+      type: string
+      enum:
+      - parameter_invalid
+      title: ErrorResponse400ParameterInvalidCode
+    accounts_create_Request:
+      oneOf:
+      - $ref: '#/components/schemas/AccountsCreateRequest0'
+      - $ref: '#/components/schemas/AccountsCreateRequest1'
+      title: accounts_create_Request
+    ErrorResponse400EntitlementNotRequestableParameterInvalidContext:
+      type: object
+      properties:
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponse400EntitlementNotRequestableParameterInvalidContextIssuesItems'
+      required:
+      - issues
+      title: ErrorResponse400EntitlementNotRequestableParameterInvalidContext
+    V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0AddressFormat:
+      type: string
+      enum:
+      - ethereum
+      - solana
+      description: Address syntax family. `ethereum` covers every EVM chain (Ethereum, Base, Polygon, Arbitrum, etc.); per-chain authorization is enforced separately via the account's chain entitlements.
+      title: V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0AddressFormat
+    ErrorResponse429RateLimitExceededCode:
+      type: string
+      enum:
+      - rate_limit_exceeded
+      title: ErrorResponse429RateLimitExceededCode
+    V0AccountsPostResponsesContentApplicationJsonSchemaOneOf1Currency:
+      type: string
+      enum:
+      - usd
+      description: Settlement currency. Today only `usd`; will extend as new currencies launch.
+      title: V0AccountsPostResponsesContentApplicationJsonSchemaOneOf1Currency
+    V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0Kind:
+      type: string
+      enum:
+      - wallet
+      description: 'Discriminator: this is a customer-owned blockchain address.'
+      title: V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0Kind
+    ErrorResponse_403_account_not_eligible_forbidden:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse403AccountNotEligibleForbiddenCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_403_account_not_eligible_forbidden
+    V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItemsEntitlementsItems:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItemsEntitlementsItemsType'
+          description: Entitlement type. `mint` is the mint capability gated by the per-chain compliance scan; `instant_settlement` is the instant-settlement whitelist; `rewards` is rewards eligibility.
+        status:
+          $ref: '#/components/schemas/V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItemsEntitlementsItemsStatus'
+          description: 'Entitlement status. `pending_approval` is requested and under Agora review; `approved` is active. `conditionally_approved` applies to `mint` only: the address is usable now (screening and whitelisting are auto-initiated) while final approval is still pending internally. `instant_settlement` and `rewards` stay `pending_approval` until reviewed. The API never auto-approves.'
+      required:
+      - type
+      - status
+      title: V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItemsEntitlementsItems
+    V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItems:
+      type: object
+      properties:
+        chain:
+          $ref: '#/components/schemas/V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItemsChain'
+          description: Network the wallet is registered on (kebab-case public network id).
+        entitlements:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItemsEntitlementsItems'
+          description: Entitlement states on this network, one per type the wallet holds on the chain.
+      required:
+      - chain
+      - entitlements
+      description: Per-network entitlement state for the wallet.
+      title: V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItems
+    V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItemsChain:
+      type: string
+      enum:
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - fraxtal
+      - gnosis
+      - immutable
+      - injective
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      - sui
+      description: Network the wallet is registered on (kebab-case public network id).
+      title: V0AccountsGetResponsesContentApplicationJsonSchemaDataItemsOneOf0NetworksItemsChain
+    V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItemsStatus:
+      type: string
+      enum:
+      - approved
+      - conditionally_approved
+      - pending_approval
+      - pending_removal
+      - rejected
+      - removed
+      description: 'Entitlement status. `pending_approval` is requested and under Agora review; `approved` is active. `conditionally_approved` applies to `mint` only: the address is usable now (screening and whitelisting are auto-initiated) while final approval is still pending internally. `instant_settlement` and `rewards` stay `pending_approval` until reviewed. The API never auto-approves.'
+      title: V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItemsStatus
+    ErrorResponse500InternalErrorCode:
+      type: string
+      enum:
+      - internal_error
+      title: ErrorResponse500InternalErrorCode
+    AccountsUpdateResponse2001:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Stable UUID identifying this account; safe to cache or display.
+        accountNumber:
+          type: string
+          description: Full bank account number.
+        bankName:
+          type: string
+          description: Name of the receiving bank.
+        beneficiary:
+          type: string
+          description: 'Account-holder name on the wire. Part of the account''s identity: distinguishes accounts that share a routing + account number (e.g. omnibus/custodian accounts holding several funds under one account number).'
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO-8601 UTC timestamp when this account was added to the org.
+        currency:
+          $ref: '#/components/schemas/V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf1Currency'
+          description: Settlement currency. Today only `usd`; will extend as new currencies launch.
+        kind:
+          $ref: '#/components/schemas/V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf1Kind'
+          description: 'Discriminator: this is a customer-owned bank account.'
+        name:
+          type: string
+          description: User-set label. Free-form; may be empty if the user hasn't set one.
+        routingNumber:
+          type: string
+          description: ABA routing number identifying the receiving bank. A public bank identifier, returned in full.
+      required:
+      - id
+      - accountNumber
+      - bankName
+      - beneficiary
+      - createdAt
+      - currency
+      - kind
+      - name
+      - routingNumber
+      description: Customer-owned bank account (WireDetail, status=verified).
+      title: AccountsUpdateResponse2001
+    V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0AddressFormat:
+      type: string
+      enum:
+      - ethereum
+      - solana
+      description: Address syntax family. `ethereum` covers every EVM chain (Ethereum, Base, Polygon, Arbitrum, etc.); per-chain authorization is enforced separately via the account's chain entitlements.
+      title: V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0AddressFormat
+    V0AccountsAccountIdPutRequestBodyContentApplicationJsonSchemaOperation:
+      type: string
+      enum:
+      - setName
+      - addNetwork
+      - requestEntitlement
+      title: V0AccountsAccountIdPutRequestBodyContentApplicationJsonSchemaOperation
+    V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItemsType:
+      type: string
+      enum:
+      - instant_settlement
+      - mint
+      - rewards
+      description: Entitlement type. `mint` is the mint capability gated by the per-chain compliance scan; `instant_settlement` is the instant-settlement whitelist; `rewards` is rewards eligibility.
+      title: V0AccountsAccountIdPutResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItemsType
+    V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItemsType:
+      type: string
+      enum:
+      - instant_settlement
+      - mint
+      - rewards
+      description: Entitlement type. `mint` is the mint capability gated by the per-chain compliance scan; `instant_settlement` is the instant-settlement whitelist; `rewards` is rewards eligibility.
+      title: V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItemsEntitlementsItemsType
+    V0AccountsPostResponsesContentApplicationJsonSchemaOneOf1Kind:
+      type: string
+      enum:
+      - bank
+      description: 'Discriminator: this is a customer-owned bank account.'
+      title: V0AccountsPostResponsesContentApplicationJsonSchemaOneOf1Kind
+    V0AccountsPostRequestBodyContentApplicationJsonSchemaOneOf0Kind:
+      type: string
+      enum:
+      - wallet
+      description: 'Discriminator: register a customer-owned blockchain address.'
+      title: V0AccountsPostRequestBodyContentApplicationJsonSchemaOneOf0Kind
+    V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItemsChain:
+      type: string
+      enum:
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - fraxtal
+      - gnosis
+      - immutable
+      - injective
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      - sui
+      description: Network the wallet is registered on (kebab-case public network id).
+      title: V0AccountsPostResponsesContentApplicationJsonSchemaOneOf0NetworksItemsChain
+    ErrorResponse_500_internal_error:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse500InternalErrorCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_500_internal_error
+  securitySchemes:
+    accessKey:
+      type: http
+      scheme: bearer
+      description: 'Agora access key (cleartext), sent as `Authorization: Bearer <accessKey>`. Used only by POST /v0/auth/token to mint a session JWT.'
+    sessionJwt:
+      type: http
+      scheme: bearer
+      description: 'Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.'

@@ -1,0 +1,240 @@
+openapi: 3.1.0
+info:
+  title: Endpoints Accounts Metrics API
+  version: 1.0.0
+servers:
+- url: https://api.agora.finance
+  description: Production
+tags:
+- name: Metrics
+paths:
+  /v0/metrics:
+    get:
+      operationId: get
+      summary: Get Aggregate and Per-Chain Metrics
+      description: "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nReturns aggregate and per-chain AUSD supply. A few response-shape details specific to this endpoint:\n\n- **`chainId` is a [CAIP-2](https://chainagnostic.org/CAIPs/caip-2) identifier.** Real values include `eip155:1` (Ethereum), `eip155:137` (Polygon), `solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp`, and `sui:mainnet`. Use it to cross-reference with DeFi Llama, CoinGecko, or on-chain data.\n- **Aggregates are omitted on partial responses.** If one or more chains can't be reached, the response sets `partial: true` and **omits** the top-level `totalSupply` / `circulatingSupply` rather than publishing a silently-truncated figure. The omitted fields are absent — the keys are not present, not `null` — so guard with `'totalSupply' in response`, not `response.totalSupply != null`. The `chains[]` array still includes every chain with a recent cached value.\n- **Supply values are decimal strings** (see the API overview for the precision convention). The plain-text variants `/v0/metrics/total-supply` and `/v0/metrics/circulating-supply` return a single decimal string when you don't need the per-chain breakdown.\n"
+      tags:
+      - Metrics
+      responses:
+        '200':
+          description: 'Aggregate and per-chain AUSD supply breakdown. When one or more chains are temporarily unavailable, the response sets `partial: true` and omits aggregate `totalSupply` and `circulatingSupply` rather than publishing a silently-truncated figure.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/metrics_get_Response_200'
+        '404':
+          description: The requested route or resource does not exist. Verify the URL and method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_404_not_found'
+        '429':
+          description: Per-IP rate limit exceeded at the Cloudflare edge. The response includes a `Retry-After` header indicating the wait period in seconds.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_429_rate_limit_exceeded'
+        '500':
+          description: An unexpected server-side failure occurred. Retry with exponential backoff and capture the `Request-Id` header for support.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_500_internal_error'
+  /v0/metrics/total-supply:
+    get:
+      operationId: totalsupply
+      summary: Get Aggregate Total Supply
+      description: "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n"
+      tags:
+      - Metrics
+      responses:
+        '200':
+          description: Aggregate total AUSD supply across all chains, returned as a plain-text decimal (e.g. `1234567890.123456`).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '404':
+          description: The requested route or resource does not exist. Verify the URL and method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_404_not_found'
+        '429':
+          description: Per-IP rate limit exceeded at the Cloudflare edge. The response includes a `Retry-After` header indicating the wait period in seconds.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_429_rate_limit_exceeded'
+        '500':
+          description: An unexpected server-side failure occurred. Retry with exponential backoff and capture the `Request-Id` header for support.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_500_internal_error'
+  /v0/metrics/circulating-supply:
+    get:
+      operationId: circulatingsupply
+      summary: Get Aggregate Circulating Supply
+      description: "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n"
+      tags:
+      - Metrics
+      responses:
+        '200':
+          description: Aggregate circulating AUSD supply across all chains, returned as a plain-text decimal (e.g. `987654321.654321`).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '404':
+          description: The requested route or resource does not exist. Verify the URL and method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_404_not_found'
+        '429':
+          description: Per-IP rate limit exceeded at the Cloudflare edge. The response includes a `Retry-After` header indicating the wait period in seconds.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_429_rate_limit_exceeded'
+        '500':
+          description: An unexpected server-side failure occurred. Retry with exponential backoff and capture the `Request-Id` header for support.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_500_internal_error'
+components:
+  schemas:
+    ErrorResponse_404_not_found:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse404NotFoundCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_404_not_found
+    metrics_get_Response_200:
+      type: object
+      properties:
+        chains:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0MetricsGetResponsesContentApplicationJsonSchemaChainsItems'
+          description: Per-chain supply breakdown. Only chains with a currently cached successful result are included; chains that have never succeeded (or are in a persistent outage on this pod) are omitted and cause `partial` to be true.
+        circulatingSupply:
+          type: string
+          description: Aggregate circulating AUSD supply across all chains, as a decimal string (e.g. `987654321.654321`). This is the sum of all per-chain circulatingSupply values. Omitted when `partial` is true.
+        partial:
+          type: boolean
+          description: True when one or more chains are missing from the response (cold start before a chain's first successful fetch, or a persistent chain outage). When true, aggregate `totalSupply` and `circulatingSupply` are **omitted**, since publishing a total that silently excludes chains would look like a large supply drop to market-data consumers.
+        totalSupply:
+          type: string
+          description: Aggregate total AUSD supply across all chains, as a decimal string (e.g. `1234567890.123456`). This is the sum of all per-chain totalSupply values. Omitted when `partial` is true.
+      required:
+      - chains
+      - partial
+      title: metrics_get_Response_200
+    ErrorResponse500InternalErrorCode:
+      type: string
+      enum:
+      - internal_error
+      title: ErrorResponse500InternalErrorCode
+    ErrorResponse_429_rate_limit_exceeded:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse429RateLimitExceededCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_429_rate_limit_exceeded
+    V0MetricsGetResponsesContentApplicationJsonSchemaChainsItems:
+      type: object
+      properties:
+        chainId:
+          type: string
+          description: CAIP-2 chain identifier (e.g. 'eip155:1' for Ethereum, 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp' for Solana). Use this for cross-referencing with DeFi Llama, CoinGecko, or on-chain data.
+        circulatingSupply:
+          type: string
+          description: AUSD in public circulation on this chain (total minus premint reserves), as a decimal string (e.g. `400000000.000000`). Use this for market cap calculations and exchange integrations.
+        network:
+          $ref: '#/components/schemas/V0MetricsGetResponsesContentApplicationJsonSchemaChainsItemsNetwork'
+          description: Blockchain network identifier. Use this to filter or group supply data by chain. Values are stable; new networks may be added but existing ones will not be renamed.
+        totalSupply:
+          type: string
+          description: Total AUSD minted on this chain, as a decimal string in human-readable units (not raw on-chain units, e.g. `500000000.000000`, not `500000000000000`). Use this when you need the gross supply figure for a single chain.
+      required:
+      - chainId
+      - circulatingSupply
+      - network
+      - totalSupply
+      title: V0MetricsGetResponsesContentApplicationJsonSchemaChainsItems
+    V0MetricsGetResponsesContentApplicationJsonSchemaChainsItemsNetwork:
+      type: string
+      enum:
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - fraxtal
+      - gnosis
+      - immutable
+      - injective
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      - sui
+      description: Blockchain network identifier. Use this to filter or group supply data by chain. Values are stable; new networks may be added but existing ones will not be renamed.
+      title: V0MetricsGetResponsesContentApplicationJsonSchemaChainsItemsNetwork
+    ErrorResponse404NotFoundCode:
+      type: string
+      enum:
+      - not_found
+      title: ErrorResponse404NotFoundCode
+    ErrorResponse429RateLimitExceededCode:
+      type: string
+      enum:
+      - rate_limit_exceeded
+      title: ErrorResponse429RateLimitExceededCode
+    ErrorResponse_500_internal_error:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse500InternalErrorCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_500_internal_error
+  securitySchemes:
+    accessKey:
+      type: http
+      scheme: bearer
+      description: 'Agora access key (cleartext), sent as `Authorization: Bearer <accessKey>`. Used only by POST /v0/auth/token to mint a session JWT.'
+    sessionJwt:
+      type: http
+      scheme: bearer
+      description: 'Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.'

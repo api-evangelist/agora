@@ -1,0 +1,171 @@
+openapi: 3.1.0
+info:
+  title: Endpoints Accounts Auth API
+  version: 1.0.0
+servers:
+- url: https://api.agora.finance
+  description: Production
+tags:
+- name: Auth
+paths:
+  /v0/auth/token:
+    post:
+      operationId: token
+      summary: Create a Session Token
+      description: "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nExchange your API key for a short-lived bearer JWT. Send the API key as `Authorization: Bearer <api_key>`; no request body is needed. The returned `sessionJwt` is valid for **15 minutes** (the TTL is not echoed in the response) and must be sent in the `Authorization` header on every subsequent authenticated request. Refresh by calling this endpoint again before expiry.\n"
+      tags:
+      - Auth
+      parameters:
+      - name: Authorization
+        in: header
+        description: 'Agora access key (cleartext), sent as `Authorization: Bearer <accessKey>`. Used only by POST /v0/auth/token to mint a session JWT.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth_token_Response_200'
+        '401':
+          description: Authentication is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_401_unauthorized'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_429_rate_limit_exceeded'
+        '500':
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_500_internal_error'
+        '503':
+          description: An upstream service is temporarily unavailable. Please retry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_503_service_unavailable'
+components:
+  schemas:
+    ErrorResponse_503_service_unavailable:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse503ServiceUnavailableCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_503_service_unavailable
+    ErrorResponse_401_unauthorized:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContext'
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_401_unauthorized
+    ErrorResponse401UnauthorizedContext:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContextReason'
+      required:
+      - reason
+      title: ErrorResponse401UnauthorizedContext
+    ErrorResponse500InternalErrorCode:
+      type: string
+      enum:
+      - internal_error
+      title: ErrorResponse500InternalErrorCode
+    ErrorResponse_429_rate_limit_exceeded:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse429RateLimitExceededCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_429_rate_limit_exceeded
+    ErrorResponse401UnauthorizedContextReason:
+      type: string
+      enum:
+      - invalid_token
+      - missing_claim
+      - missing_header
+      - token_expired
+      - token_revoked
+      - unknown_tenant
+      title: ErrorResponse401UnauthorizedContextReason
+    ErrorResponse401UnauthorizedCode:
+      type: string
+      enum:
+      - unauthorized
+      title: ErrorResponse401UnauthorizedCode
+    auth_token_Response_200:
+      type: object
+      properties:
+        sessionJwt:
+          type: string
+          description: 'Short-lived session JWT. Send it as `Authorization: Bearer <sessionJwt>` on every authenticated endpoint.'
+      required:
+      - sessionJwt
+      title: auth_token_Response_200
+    ErrorResponse429RateLimitExceededCode:
+      type: string
+      enum:
+      - rate_limit_exceeded
+      title: ErrorResponse429RateLimitExceededCode
+    ErrorResponse503ServiceUnavailableCode:
+      type: string
+      enum:
+      - service_unavailable
+      title: ErrorResponse503ServiceUnavailableCode
+    ErrorResponse_500_internal_error:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse500InternalErrorCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_500_internal_error
+  securitySchemes:
+    accessKey:
+      type: http
+      scheme: bearer
+      description: 'Agora access key (cleartext), sent as `Authorization: Bearer <accessKey>`. Used only by POST /v0/auth/token to mint a session JWT.'
+    sessionJwt:
+      type: http
+      scheme: bearer
+      description: 'Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.'
