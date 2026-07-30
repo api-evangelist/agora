@@ -1,22 +1,189 @@
 aid: agora
 name: Agora
-description: 'Agora is a company surfaced as a portfolio company of general-catalyst and added to the
-  API Evangelist network as a stub for enrichment. Sector: fintech. This profile is a lead awaiting the
-  enrichment pipeline.'
+description: >-
+  Agora (agora.finance) is a stablecoin infrastructure company building "money and payments
+  for internet markets." Its core product is AUSD, the Agora Dollar — a digital dollar minted
+  1:1 with USD and backed 100% by cash, overnight repurchase agreements, and short-term U.S.
+  Treasuries. AUSD is an ERC-20 token live across 12+ EVM and Solana networks, with reserves
+  managed by VanEck and State Street. Agora also offers white-labeled stablecoins (launch your
+  own branded token on an ERC-4626 vault architecture over AUSD), instant liquidity (atomic
+  minting against USDC/USDT), and Stable Swaps (a fixed-price, zero-slippage swap protocol for
+  verified users). The Agora Public API (Beta, v0) exposes real-time AUSD supply metrics plus
+  authenticated Accounts, Routes, and Transactions endpoints for mint/redeem flows. Founded by
+  Nick van Eck; backed by General Catalyst, Paradigm, and Dragonfly.
 url: https://raw.githubusercontent.com/api-evangelist/agora/refs/heads/main/apis.yml
 x-type: company
 x-source: general-catalyst-portfolio
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: enriched
+x-tier-reason: real-public-api-openapi-3.1
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
 modified: '2026-07-17'
+image: https://www.agora.finance/favicon.ico
 tags:
 - Company
 - Fintech
-apis: []
+- Stablecoin
+- Digital Dollar
+- Payments
+- Cryptocurrency
+- Blockchain
+- API
+- AUSD
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: agora:agora-accounts-api
+  name: Agora Accounts API
+  description: The Accounts API from Agora — 2 operation(s) for accounts.
+  humanURL: https://docs.agora.finance/api
+  baseURL: https://api.agora.finance
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/agora-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.agora.finance/api
+  - type: APIReference
+    url: https://docs.agora.finance/api/endpoints
+  - type: GettingStarted
+    url: https://docs.agora.finance/api
+  - type: Authentication
+    url: authentication/agora-authentication.yml
+- aid: agora:agora-auth-api
+  name: Agora Auth API
+  description: The Auth API from Agora — 1 operation(s) for auth.
+  humanURL: https://docs.agora.finance/api
+  baseURL: https://api.agora.finance
+  tags:
+  - Auth
+  properties:
+  - type: OpenAPI
+    url: openapi/agora-auth-api-openapi.yml
+  - type: Documentation
+    url: https://docs.agora.finance/api
+  - type: APIReference
+    url: https://docs.agora.finance/api/endpoints
+  - type: GettingStarted
+    url: https://docs.agora.finance/api
+  - type: Authentication
+    url: authentication/agora-authentication.yml
+- aid: agora:agora-metrics-api
+  name: Agora Metrics API
+  description: The Metrics API from Agora — 3 operation(s) for metrics.
+  humanURL: https://docs.agora.finance/api
+  baseURL: https://api.agora.finance
+  tags:
+  - Metrics
+  properties:
+  - type: OpenAPI
+    url: openapi/agora-metrics-api-openapi.yml
+  - type: Documentation
+    url: https://docs.agora.finance/api
+  - type: APIReference
+    url: https://docs.agora.finance/api/endpoints
+  - type: GettingStarted
+    url: https://docs.agora.finance/api
+  - type: Authentication
+    url: authentication/agora-authentication.yml
+- aid: agora:agora-routes-api
+  name: Agora Routes API
+  description: The Routes API from Agora — 2 operation(s) for routes.
+  humanURL: https://docs.agora.finance/api
+  baseURL: https://api.agora.finance
+  tags:
+  - Routes
+  properties:
+  - type: OpenAPI
+    url: openapi/agora-routes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.agora.finance/api
+  - type: APIReference
+    url: https://docs.agora.finance/api/endpoints
+  - type: GettingStarted
+    url: https://docs.agora.finance/api
+  - type: Authentication
+    url: authentication/agora-authentication.yml
+- aid: agora:agora-transactions-api
+  name: Agora Transactions API
+  description: The Transactions API from Agora — 2 operation(s) for transactions.
+  humanURL: https://docs.agora.finance/api
+  baseURL: https://api.agora.finance
+  tags:
+  - Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/agora-transactions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.agora.finance/api
+  - type: APIReference
+    url: https://docs.agora.finance/api/endpoints
+  - type: GettingStarted
+    url: https://docs.agora.finance/api
+  - type: Authentication
+    url: authentication/agora-authentication.yml
+common:
+- type: AgenticAccess
+  url: agentic-access/agora-agentic-access.yml
+- type: DomainSecurity
+  url: security/agora-domain-security.yml
+- type: DeveloperPortal
+  url: https://docs.agora.finance/
+- type: Documentation
+  url: https://docs.agora.finance/api
+- type: APIReference
+  url: https://docs.agora.finance/api/endpoints
+- type: GettingStarted
+  url: https://docs.agora.finance/api
+- type: Blog
+  url: https://www.agora.finance/blog
+- type: GitHubOrganization
+  url: https://github.com/agora-finance
+- type: TermsOfService
+  url: https://static.agora.finance/termsofuse.pdf
+- type: PrivacyPolicy
+  url: https://static.agora.finance/privacypolicy.pdf
+- type: SignUp
+  url: https://www.agora.finance/contact
+- type: Support
+  url: https://www.agora.finance/contact
+- type: Authentication
+  url: authentication/agora-authentication.yml
+- type: Conventions
+  url: conventions/agora-conventions.yml
+- type: ErrorCatalog
+  url: errors/agora-error-codes.yml
+- type: Lifecycle
+  url: lifecycle/agora-lifecycle.yml
+- type: ChangeLog
+  url: changelog/agora-changelog.yml
+- type: Conformance
+  url: conformance/agora-conformance.yml
+- type: DataModel
+  url: data-model/agora-data-model.yml
+- type: Overlay
+  url: overlays/agora-endpoints-overlay.yaml
+- type: WellKnown
+  url: well-known/agora-well-known.yml
+- type: LLMsTxt
+  url: llms/agora-llms.txt
+- type: MCPServer
+  url: mcp/agora-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
