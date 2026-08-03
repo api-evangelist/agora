@@ -1,0 +1,36 @@
+generated: '2026-07-17'
+method: searched
+source: probed /.well-known/ on Agora hosts
+hosts:
+  - host: https://docs.agora.finance
+    documents:
+      - path: /.well-known/api-catalog        # RFC 9727 API catalog linkset
+        status: 200
+        file: agora-api-catalog.json
+      - path: /.well-known/security.txt        # RFC 9116
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+  - host: https://api.agora.finance
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+  - host: https://www.agora.finance
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+notes: >-
+  The docs host publishes an RFC 9727 /.well-known/api-catalog linkset pointing at the
+  OpenAPI (endpoints.yaml) and the human docs. No security.txt, OIDC, or OAuth
+  authorization-server discovery documents are published (auth is a proprietary
+  API-key -> session-JWT exchange, not OAuth/OIDC).

@@ -1,0 +1,26 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.agora.finance/api
+versioning:
+  scheme: uri-path
+  current: v0
+  stability: beta
+  docs: https://docs.agora.finance/api
+  notes: >-
+    The Agora Public API is in Beta; the contract may change between releases and may
+    implement breaking changes. Consumers are advised to watch the changelog.
+changelog:
+  url: https://docs.agora.finance/api/changelog
+  notes: A dated changelog page exists; no dated entries published yet at time of capture (Beta).
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No formal deprecation policy or RFC 8594 Sunset/Deprecation header support documented.
+sla:
+  url: null
+status_page: null
+deprecated_operations: []
+notes: >-
+  No public status page (status.agora.finance does not resolve) and no published SLA or
+  deprecation policy as of this capture. Lifecycle signal is limited to the uri-path v0
+  Beta versioning and the changelog surface.

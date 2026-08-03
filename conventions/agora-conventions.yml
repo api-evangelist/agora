@@ -1,0 +1,44 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.agora.finance/api
+docs: https://docs.agora.finance/api
+authentication:
+  style: bearer
+  model: api-key exchanged at POST /v0/auth/token for a 15-minute session JWT
+  ref: authentication/agora-authentication.yml
+idempotency:
+  supported: false
+  notes: >-
+    No idempotency-key header or parameter is documented for the Agora Public API as of
+    the Beta v0 surface. Duplicate account/route creation is instead guarded server-side
+    with 409 conflicts (account_already_exists, route_already_exists) and deterministic
+    route ids returned in context.routeId.
+pagination:
+  style: unspecified
+  notes: >-
+    List endpoints (GET /v0/accounts, /v0/routes, /v0/transactions) return a `data` array;
+    no cursor/offset pagination parameters are documented in the v0 Beta spec.
+money_representation:
+  format: decimal-string
+  notes: >-
+    Monetary values are decimal strings (e.g. "987654321.654321"), never JSON numbers.
+    AUSD carries six decimals of precision; parse with a decimal library (decimal.Decimal,
+    BigNumber.js, rust_decimal). Follows Circle/Stripe practice.
+request_tracing:
+  header: Request-Id
+  notes: Every response (success or error) carries a Request-Id header for end-to-end tracing.
+versioning:
+  scheme: uri-path
+  current: v0
+  stability: beta
+  ref: lifecycle/agora-lifecycle.yml
+error_envelope:
+  shape: '{ code, message, docs_url, context? }'
+  code_stable: true
+  message_stable: false
+  ref: errors/agora-error-codes.yml
+rate_limit_signal:
+  enforcement: per-IP at the Cloudflare edge
+  status: 429 rate_limit_exceeded
+  headers: [Retry-After]
+  notes: Retry-After header (seconds) on 429; use exponential backoff.

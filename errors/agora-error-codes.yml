@@ -1,0 +1,90 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.agora.finance/api/errors
+derived_from: openapi/agora-openapi-original.yml
+format: agora-error-envelope
+envelope:
+  fields:
+    code: Machine-readable error code. Stable — safe to match on in code.
+    message: Human-readable explanation. May change without notice — do not match on it.
+    docs_url: Link back to the error reference page.
+    context: Per-error structured details; present only for parameter_invalid, unauthorized, route_already_exists.
+  request_id_header: Request-Id
+errors:
+  - http: 400
+    code: parameter_invalid
+    when: One or more request parameters fail validation.
+    context: issues[] array with per-field detail
+    remediation: Inspect context.issues for the offending field; correct and retry.
+  - http: 400
+    code: chain_unsupported
+    when: The request references a chain Agora does not support.
+    remediation: Use a supported chain.
+  - http: 400
+    code: currency_unsupported
+    when: The request references a currency Agora does not support for this operation.
+    remediation: Use a supported currency (see supported topologies on POST /v0/routes).
+  - http: 400
+    code: direction_unsupported
+    when: The from/to pair does not resolve to a supported route direction.
+    remediation: Check supported topologies on POST /v0/routes and adjust from/to.
+  - http: 400
+    code: entitlement_not_requestable
+    when: The requested entitlement can't be requested for that account or network.
+    context: issues[] array
+    remediation: Inspect context.issues; request a supported entitlement on a supported network.
+  - http: 401
+    code: unauthorized
+    when: Authentication is missing or failed. Specific cause in context.reason.
+    context: 'reason: missing_header | invalid_token | token_expired | token_revoked | unknown_tenant | missing_claim'
+    remediation: Resolve per reason; typically exchange or refresh the session JWT.
+  - http: 403
+    code: forbidden
+    when: Authenticated but the credential lacks permission for this resource.
+    remediation: Confirm the key is provisioned for the operation; else contact your Agora account manager.
+  - http: 403
+    code: account_not_eligible
+    when: Your organization or the destination account for the chain isn't eligible.
+    remediation: Contact your Agora account manager to enable it.
+  - http: 404
+    code: not_found
+    when: The requested resource does not exist (generic fallback).
+    remediation: Verify the URL and method.
+  - http: 404
+    code: account_not_found
+    when: The referenced account does not exist for your organization.
+    remediation: Verify the account id against GET /v0/accounts.
+  - http: 404
+    code: route_not_found
+    when: The referenced route does not exist for your organization.
+    remediation: Verify the route id against GET /v0/routes.
+  - http: 404
+    code: transaction_not_found
+    when: The referenced transaction does not exist for your organization.
+    remediation: Verify the transaction id against GET /v0/transactions.
+  - http: 409
+    code: route_already_exists
+    when: A route with these parameters already exists.
+    context: routeId of the existing route
+    remediation: Use the existing route (ids are deterministic) via GET /v0/routes/{routeId}.
+  - http: 409
+    code: account_already_exists
+    when: An account with these details is already registered for your organization.
+    remediation: Fetch it via GET /v0/accounts instead of re-creating it.
+  - http: 429
+    code: rate_limit_exceeded
+    when: The per-IP rate limit at the Cloudflare edge was exceeded.
+    headers: [Retry-After]
+    remediation: Wait the Retry-After duration, then retry with exponential backoff.
+  - http: 500
+    code: internal_error
+    when: An unexpected server-side failure.
+    remediation: Retry with exponential backoff; if it persists capture Request-Id and contact support.
+  - http: 503
+    code: route_creation_unavailable
+    when: Route creation is temporarily unavailable.
+    remediation: Retry after a short delay with exponential backoff.
+  - http: 503
+    code: service_unavailable
+    when: The service is temporarily unavailable.
+    remediation: Retry after a short delay with exponential backoff.

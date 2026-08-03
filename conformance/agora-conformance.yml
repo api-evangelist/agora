@@ -1,0 +1,34 @@
+generated: '2026-07-17'
+method: derived
+source: openapi/agora-openapi-original.yml
+standards:
+  - id: oauth2
+    conforms: false
+    evidence: Auth is a proprietary API-key -> session-JWT bearer exchange, not OAuth2.
+  - id: oidc
+    conforms: false
+  - id: jwt-rfc7519
+    conforms: true
+    evidence: Session tokens are RS256-signed JWTs issued by POST /v0/auth/token.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Error responses use a proprietary {code,message,docs_url,context} envelope, not application/problem+json.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: No /.well-known/security.txt published.
+  - id: rfc9727-api-catalog
+    conforms: true
+    evidence: docs.agora.finance publishes /.well-known/api-catalog linkset.
+  - id: rfc8594-sunset-header
+    conforms: false
+  - id: openapi-3.1
+    conforms: true
+    evidence: OpenAPI 3.1.0 published at docs.agora.finance/openapi.yaml and api.agora.finance/v0/openapi.json.
+  - id: erc-20
+    conforms: true
+    evidence: AUSD is an ERC-20 stablecoin (on-chain contract; outside the REST surface).
+notes: >-
+  Standards asserted are derived from the OpenAPI, error envelope, and well-known probes.
+  This is a derive-only conformance file (no published third-party compliance program in
+  the REST developer docs), so no Compliance pointer is emitted. AUSD undergoes smart-contract
+  security audits (Cantina Spearbit, Certora, Zellic, MoveBit, Halborn) documented separately.

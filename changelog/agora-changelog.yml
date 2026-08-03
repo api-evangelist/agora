@@ -1,0 +1,12 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.agora.finance/api/changelog
+scheme: uri-path
+current_version: v0
+stability: beta
+url: https://docs.agora.finance/api/changelog
+entries: []
+notes: >-
+  The Agora Public API publishes a dedicated changelog page. While the API is in Beta the
+  contract may change between releases; no dated entries were published at the time of
+  capture. Re-run to harvest entries as they land.

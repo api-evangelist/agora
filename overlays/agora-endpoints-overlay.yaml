@@ -1,0 +1,19 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Agora Public API
+  version: 1.0.0
+extends: openapi/agora-openapi-original.yml
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: agora
+      x-apievangelist-product: AUSD stablecoin platform (Public API)
+      x-apievangelist-auth: api-key exchanged for 15-minute session JWT
+      x-apievangelist-error-envelope: '{code,message,docs_url,context?}'
+      x-apievangelist-money-format: decimal-string (6 dp)
+      x-apievangelist-request-id-header: Request-Id
+      x-apievangelist-stability: beta
+  - target: $.info
+    update:
+      x-apievangelist-docs: https://docs.agora.finance/api
+      x-apievangelist-well-known-api-catalog: https://docs.agora.finance/.well-known/api-catalog

@@ -1,0 +1,68 @@
+# Agora Finance
+
+## Instructions for AI Agents
+
+- For clean Markdown of any page, append `.md` to the page URL
+- For section-specific indexes, append `/llms.txt` to any section URL
+- For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://docs.agora.finance/_mcp/server
+
+## Docs
+
+- [AUSD General Information](https://docs.agora.finance/developer.md): Overview of the Agora Dollar (AUSD) ERC-20 stablecoin — architecture, features, and developer resources
+- [Contract Overview](https://docs.agora.finance/contract-overview.md): AUSD token contract architecture including supported ERC standards, minting, burning, and asset freezing
+- [Role Based Access Control](https://docs.agora.finance/developer/rbac.md): RBAC system for the AUSD contract — Admin, Pauser, Freezer, Minter, and Burner roles and permissions
+- [Security and Compliance](https://docs.agora.finance/developer/security-and-compliance.md): Security measures and compliance features including minting controls, asset freezing, and upgrade mechanisms
+- [Advanced ERC Features](https://docs.agora.finance/developer/advanced-erc-features.md): EIP-712 typed data signing, ERC-1271 smart contract wallet validation, ERC-2612 permits, and ERC-3009 gasless transfers
+- [Contract Deployments](https://docs.agora.finance/developer/contract-deployments.md): AUSD mainnet and testnet contract addresses across all supported EVM and Solana networks
+- [Smart Contract Audit Reports](https://docs.agora.finance/developer/smart-contract-audit-reports.md): Security audit reports from Cantina Spearbit, Certora, Zellic, MoveBit, and Halborn for AUSD contracts
+- [Transparency](https://docs.agora.finance/developer/transparency.md): Proof of reserves attestations and monthly management reports for AUSD backing
+- [Other Information](https://docs.agora.finance/developer/other-information.md): Additional resources and reference links for AUSD developers
+- [Agora Public API](https://docs.agora.finance/api.md): Getting started with Agora's API.
+- [Authentication](https://docs.agora.finance/api/authentication.md): How to authenticate against the Agora Public API.
+- [Overview](https://docs.agora.finance/api/endpoints/accounts/overview.md): The bank accounts and wallets your funds move through.
+- [Overview](https://docs.agora.finance/api/endpoints/routes/overview.md): Reusable mint and redeem paths, and how they settle.
+- [Overview](https://docs.agora.finance/api/endpoints/transactions/overview.md): Settled transactions and their per-leg detail.
+- [Changelog](https://docs.agora.finance/api/changelog.md): Updates to the Agora Public API.
+- [Errors](https://docs.agora.finance/api/errors.md): HTTP status codes, error codes, and recommended handling.
+- [Protocol Overview](https://docs.agora.finance/stable-swaps.md): Agora Stable Swaps — a fixed-price swap protocol for verified users eliminating slippage on stablecoin trades
+- [Protocol Deployments](https://docs.agora.finance/stable-swaps/protocol-deployments.md): Stable Swaps factory and pair contract addresses across supported networks
+- [Core Concepts](https://docs.agora.finance/stable-swaps/core-concepts.md): Key concepts behind Agora Stable Swaps including fixed-price mechanics, liquidity, and fee structures
+- [Smart Contracts](https://docs.agora.finance/stable-swaps/smart-contracts.md): Overview of the Stable Swaps smart contract architecture — factory and pair contracts
+- [Factory Contract](https://docs.agora.finance/stable-swaps/smart-contracts/factory-contract.md): Factory contract API reference — creating pairs, querying deployments, and deterministic CREATE3 addresses
+- [Pair Contract](https://docs.agora.finance/stable-swaps/smart-contracts/pair-contract.md): Pair contract API reference — swap execution, reserve management, pricing, and fee configuration
+- [Quick Start](https://docs.agora.finance/stable-swaps/guides/quick-start.md): Get started with Agora Stable Swaps — setup, dependencies, and your first swap using Viem and TypeScript
+- [Fetching All Pairs](https://docs.agora.finance/stable-swaps/guides/fetching-all-pairs.md): Query the factory contract to retrieve all available trading pairs and their addresses
+- [Fetching Pair Reserves](https://docs.agora.finance/stable-swaps/guides/fetching-pair-reserves.md): Read current reserve balances for a trading pair to check available liquidity
+- [Fetching Purchase Fees](https://docs.agora.finance/stable-swaps/guides/fetching-purchase-fees.md): Query fee rates for a specific trading pair before executing a swap
+- [Fetching Pair Price](https://docs.agora.finance/stable-swaps/guides/fetching-pair-price.md): Get the current fixed price for a trading pair
+- [Getting Testnet Tokens](https://docs.agora.finance/stable-swaps/guides/getting-testnet-tokens.md): Obtain testnet tokens and get whitelisted for Stable Swaps testing on supported testnets
+- [Executing a Swap](https://docs.agora.finance/stable-swaps/guides/executing-swap.md): Guide to executing token swaps through the Pair contract with fixed-input and fixed-output options
+- [Swapping - Fixed Input](https://docs.agora.finance/stable-swaps/guides/executing-swap/swapping-fixed-input.md): Execute a swap specifying an exact input amount and receiving a calculated output
+- [Swapping - Fixed Output](https://docs.agora.finance/stable-swaps/guides/executing-swap/swapping-fixed-output.md): Execute a swap specifying an exact output amount with the input calculated automatically
+- [Agora Whitelabel Stablecoin Integration](https://docs.agora.finance/whitelabels.md): Launch your own branded stablecoin powered by Agora's infrastructure using an ERC4626 vault architecture
+- [Getting Started](https://docs.agora.finance/whitelabels/getting-started.md): Prerequisites and initial setup for integrating with Agora's whitelabel stablecoin platform
+- [Mint or Deposit newUSD](https://docs.agora.finance/whitelabels/mint-or-deposit-new-usd.md): How to mint new whitelabel stablecoins or deposit USD to receive tokens via the ERC4626 vault
+- [Redeem or Withdraw newUSD](https://docs.agora.finance/whitelabels/redeem-or-withdraw-new-usd.md): How to redeem whitelabel stablecoins for AUSD or withdraw from the vault
+- [Contract Architecture](https://docs.agora.finance/whitelabels/contract-architecture.md): Smart contract architecture for whitelabel stablecoins — proxy patterns, roles, and upgrade mechanisms
+- [Contract Interface](https://docs.agora.finance/whitelabels/contract-interface.md): Complete smart contract interface reference for whitelabel stablecoin contracts
+
+## API Docs
+
+- Endpoints > Auth [Create a Session Token](https://docs.agora.finance/api/endpoints/auth/token.md)
+- Endpoints > Metrics [Get Aggregate and Per-Chain Metrics](https://docs.agora.finance/api/endpoints/metrics/get.md)
+- Endpoints > Metrics [Get Aggregate Total Supply](https://docs.agora.finance/api/endpoints/metrics/totalsupply.md)
+- Endpoints > Metrics [Get Aggregate Circulating Supply](https://docs.agora.finance/api/endpoints/metrics/circulatingsupply.md)
+- Endpoints > Accounts [List Accounts](https://docs.agora.finance/api/endpoints/accounts/get.md)
+- Endpoints > Accounts [Register an Account](https://docs.agora.finance/api/endpoints/accounts/create.md)
+- Endpoints > Accounts [Update an Account](https://docs.agora.finance/api/endpoints/accounts/update.md)
+- Endpoints > Routes [List Routes](https://docs.agora.finance/api/endpoints/routes/get.md)
+- Endpoints > Routes [Get a Route by ID](https://docs.agora.finance/api/endpoints/routes/getbyid.md)
+- Endpoints > Routes [Create a Route](https://docs.agora.finance/api/endpoints/routes/create.md)
+- Endpoints > Transactions [List Transactions](https://docs.agora.finance/api/endpoints/transactions/list.md)
+- Endpoints > Transactions [Get a Transaction by ID](https://docs.agora.finance/api/endpoints/transactions/getbyid.md)
+
+## OpenAPI Specification
+
+The raw OpenAPI 3.1 specification for this API is available at:
+- [OpenAPI JSON](https://docs.agora.finance/openapi.json)
+- [OpenAPI YAML](https://docs.agora.finance/openapi.yaml)

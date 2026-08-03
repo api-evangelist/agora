@@ -1,0 +1,22 @@
+{
+  "provider": "agora",
+  "sources": [
+    "agora-accounts-api-openapi.yml",
+    "agora-auth-api-openapi.yml",
+    "agora-metrics-api-openapi.yml",
+    "agora-routes-api-openapi.yml",
+    "agora-transactions-api-openapi.yml"
+  ],
+  "outputs": [
+    "agora-accounts-api-openapi.yml",
+    "agora-auth-api-openapi.yml",
+    "agora-metrics-api-openapi.yml",
+    "agora-routes-api-openapi.yml",
+    "agora-transactions-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

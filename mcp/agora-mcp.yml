@@ -1,0 +1,17 @@
+generated: '2026-07-17'
+method: searched
+status: published
+source: https://docs.agora.finance/llms.txt
+server:
+  name: agora-docs
+  transport: http
+  url: https://docs.agora.finance/_mcp/server
+  scope: documentation
+  description: >-
+    Agora publishes a hosted MCP server over its developer documentation for AI clients
+    (Claude Code, Cursor, etc.), advertised in llms.txt. It exposes the docs corpus (AUSD
+    contract, Public API, stable swaps, whitelabels) as MCP resources for retrieval.
+notes: >-
+  This is a documentation MCP server (docs retrieval), not a transactional wrapper over the
+  Public API operations. Verified live (HTTP 200). A candidate transactional MCP could be
+  derived from the 12 REST operations if/when Agora ships one.

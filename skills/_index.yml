@@ -1,0 +1,12 @@
+generated: '2026-07-17'
+method: generated
+source: openapi/agora-openapi-original.yml
+skills:
+  - file: agora-read-ausd-metrics.md
+    name: Read AUSD supply metrics
+    api: openapi/agora-openapi-original.yml
+    operations: [get, totalsupply, circulatingsupply]
+  - file: agora-authenticate-and-create-route.md
+    name: Authenticate, register an account, and create a mint/redeem route
+    api: openapi/agora-openapi-original.yml
+    operations: [token, create, get, getbyid, list]

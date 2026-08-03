@@ -1,0 +1,38 @@
+generated: '2026-07-17'
+method: derived
+source: openapi/agora-openapi-original.yml
+entities:
+  - name: Account
+    description: A bank account or blockchain wallet registered to your organization; funds move through it.
+    operations: ['GET /v0/accounts', 'POST /v0/accounts', 'PUT /v0/accounts/{accountId}']
+    kinds: [wallet, bank]
+  - name: Route
+    description: A reusable mint/redeem path (fiat <-> AUSD, stablecoin <-> AUSD) with settlement instructions; ids are deterministic.
+    operations: ['GET /v0/routes', 'POST /v0/routes', 'GET /v0/routes/{routeId}']
+  - name: Transaction
+    description: A settled transaction with per-leg settlement detail (source, recipient, legs).
+    operations: ['GET /v0/transactions', 'GET /v0/transactions/{txnId}']
+  - name: Metric
+    description: Real-time AUSD supply figures, aggregate and per-chain (public, unauthenticated).
+    operations: ['GET /v0/metrics', 'GET /v0/metrics/total-supply', 'GET /v0/metrics/circulating-supply']
+relationships:
+  - from: Route
+    to: Account
+    kind: belongs_to
+    via: from/to endpoints resolve to registered accounts/wallets
+  - from: Transaction
+    to: Route
+    kind: belongs_to
+    via: transactions settle along a route
+  - from: Transaction
+    to: Account
+    kind: references
+    via: source and recipient
+  - from: Account
+    to: Network
+    kind: has_many
+    via: networks[] (per-chain entitlements)
+notes: >-
+  Derived from OpenAPI paths, tags, and response schema shapes. Amounts are decimal strings;
+  the on-chain AUSD ERC-20 contract (12+ EVM/Solana networks) sits beneath the Route/Transaction
+  settlement model but is outside the REST surface.
