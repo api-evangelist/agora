@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Endpoints Accounts Routes API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Routes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Routes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agora.finance/v0/routes",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nReturn every route on the authenticated organization. Each route includes the full `instructions` block so callers can resolve memos and mint/redeem addresses without an additional retrieve.\n"
+        },
+        {
+          "info": {
+            "name": "Create a Route",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agora.finance/v0/routes",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nCreate a persistent source → destination route. The response includes reusable settlement instructions — a wire memo for fiat sources, or one mint or redeem address per supported chain for blockchain sources — that the caller uses to initiate "
+        },
+        {
+          "info": {
+            "name": "Get a Route by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agora.finance/v0/routes/:routeId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "routeId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nRetrieve a single route by its id, including the full reusable `instructions` block. Route ids are deterministic — the same canonical inputs always derive the same id — so a `404` means no route with those parameters has been created for your "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

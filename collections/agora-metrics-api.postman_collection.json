@@ -1,0 +1,582 @@
+{
+  "item": [
+    {
+      "id": "174b8e1f-1ddd-4e21-bd1a-75e9b2649f85",
+      "name": "Metrics",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5e756e74-fc03-4cbd-86f4-7b72f6b0d071",
+          "name": "Get Aggregate and Per-Chain Metrics",
+          "request": {
+            "name": "Get Aggregate and Per-Chain Metrics",
+            "description": {
+              "content": "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nReturns aggregate and per-chain AUSD supply. A few response-shape details specific to this endpoint:\n\n- **`chainId` is a [CAIP-2](https://chainagnostic.org/CAIPs/caip-2) identifier.** Real values include `eip155:1` (Ethereum), `eip155:137` (Polygon), `solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp`, and `sui:mainnet`. Use it to cross-reference with DeFi Llama, CoinGecko, or on-chain data.\n- **Aggregates are omitted on partial responses.** If one or more chains can't be reached, the response sets `partial: true` and **omits** the top-level `totalSupply` / `circulatingSupply` rather than publishing a silently-truncated figure. The omitted fields are absent — the keys are not present, not `null` — so guard with `'totalSupply' in response`, not `response.totalSupply != null`. The `chains[]` array still includes every chain with a recent cached value.\n- **Supply values are decimal strings** (see the API overview for the precision convention). The plain-text variants `/v0/metrics/total-supply` and `/v0/metrics/circulating-supply` return a single decimal string when you don't need the per-chain breakdown.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v0",
+                "metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "87e2421c-43e6-4999-a509-d0877fb0921a",
+              "name": "Aggregate and per-chain AUSD supply breakdown. When one or more chains are temporarily unavailable, the response sets `partial: true` and omits aggregate `totalSupply` and `circulatingSupply` rather than publishing a silently-truncated figure.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"chains\": [\n    {\n      \"chainId\": \"string\",\n      \"circulatingSupply\": \"string\",\n      \"network\": \"plume\",\n      \"totalSupply\": \"string\"\n    },\n    {\n      \"chainId\": \"string\",\n      \"circulatingSupply\": \"string\",\n      \"network\": \"sui\",\n      \"totalSupply\": \"string\"\n    }\n  ],\n  \"partial\": true,\n  \"circulatingSupply\": \"string\",\n  \"totalSupply\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc637df6-1ff7-42cd-89ac-8eaa470021c3",
+              "name": "The requested route or resource does not exist. Verify the URL and method.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"not_found\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "964d6a76-757e-4950-9523-746ab6c747e5",
+              "name": "Per-IP rate limit exceeded at the Cloudflare edge. The response includes a `Retry-After` header indicating the wait period in seconds.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rate_limit_exceeded\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7f80f0d-cd9e-45d7-b435-f5ae5a3c7646",
+              "name": "An unexpected server-side failure occurred. Retry with exponential backoff and capture the `Request-Id` header for support.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"internal_error\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "95d75c1d-17b8-41f0-92ae-75920159d3e8",
+          "name": "Get Aggregate Total Supply",
+          "request": {
+            "name": "Get Aggregate Total Supply",
+            "description": {
+              "content": "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v0",
+                "metrics",
+                "total-supply"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f78d7bcc-4aa4-4e25-8f5b-cccbdd16cfbe",
+              "name": "Aggregate total AUSD supply across all chains, returned as a plain-text decimal (e.g. `1234567890.123456`).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "metrics",
+                    "total-supply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1c49aabb-837f-4ad5-a5b4-a66c56f7a770",
+              "name": "The requested route or resource does not exist. Verify the URL and method.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "metrics",
+                    "total-supply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"not_found\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d08ec69-4e5f-4e50-83f7-e0fad71bba0d",
+              "name": "Per-IP rate limit exceeded at the Cloudflare edge. The response includes a `Retry-After` header indicating the wait period in seconds.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "metrics",
+                    "total-supply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rate_limit_exceeded\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c0c25cf0-909c-429c-88c4-abeecf89e308",
+              "name": "An unexpected server-side failure occurred. Retry with exponential backoff and capture the `Request-Id` header for support.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "metrics",
+                    "total-supply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"internal_error\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c3dd9a5c-0096-4924-b016-13e664a50a28",
+          "name": "Get Aggregate Circulating Supply",
+          "request": {
+            "name": "Get Aggregate Circulating Supply",
+            "description": {
+              "content": "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v0",
+                "metrics",
+                "circulating-supply"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b8ed21c8-98c8-47a1-98af-1af728a9974e",
+              "name": "Aggregate circulating AUSD supply across all chains, returned as a plain-text decimal (e.g. `987654321.654321`).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "metrics",
+                    "circulating-supply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6abfe5c5-0018-42ff-9302-6cbf1fd62e85",
+              "name": "The requested route or resource does not exist. Verify the URL and method.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "metrics",
+                    "circulating-supply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"not_found\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fbcee80c-c703-49a4-a05d-e6864de2064d",
+              "name": "Per-IP rate limit exceeded at the Cloudflare edge. The response includes a `Retry-After` header indicating the wait period in seconds.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "metrics",
+                    "circulating-supply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rate_limit_exceeded\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8ebc830e-e50f-481e-987c-461ea6d776cb",
+              "name": "An unexpected server-side failure occurred. Retry with exponential backoff and capture the `Request-Id` header for support.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "metrics",
+                    "circulating-supply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"internal_error\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.agora.finance",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d6e5f50c-cf67-45c3-afe7-bd9e4a50240a",
+    "name": "Endpoints Accounts Metrics API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,838 @@
+{
+  "item": [
+    {
+      "id": "8dc877af-ff1c-4e12-8b2d-9feeff8219e2",
+      "name": "Transactions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4a9b50e2-6704-495f-9170-ba6a462bbe87",
+          "name": "List Transactions",
+          "request": {
+            "name": "List Transactions",
+            "description": {
+              "content": "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nList your settled transactions, newest first, with cursor pagination. Each entry summarizes the `source` and `recipient`, the per-currency totals each side moved, and the `type` (`mint`, `redeem`, `bridge`, `reward`, `return`). `type` and `status` are open enums; tolerate unknown values. Fetch one transaction's legs with `GET /v0/transactions/{txnId}`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v0",
+                "transactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "677cf2d9-8bca-4b50-9ab2-eae00a6c8691",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"477cf209-b43a-db5f-df40-1daf84d9b329\",\n      \"initiatedAt\": \"1976-11-08T00:49:51.549Z\",\n      \"isInstantSettlement\": false,\n      \"legCount\": 1463,\n      \"recipient\": {\n        \"kind\": \"bank\",\n        \"accountId\": \"5f97d716-9319-a7e9-a86b-61adc1fa0c98\",\n        \"accountNumber\": \"string\",\n        \"bankName\": \"string\",\n        \"name\": \"string\",\n        \"amounts\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"settledAt\": \"1957-09-14T18:14:02.773Z\",\n      \"source\": {\n        \"kind\": \"bank\",\n        \"accountId\": \"40b20e88-3035-e8b4-8c04-a7cf0755192e\",\n        \"accountNumber\": \"string\",\n        \"bankName\": \"string\",\n        \"name\": \"string\",\n        \"amounts\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"status\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"id\": \"dbdfe9c7-ed18-f8df-78ad-84a9917495cf\",\n      \"initiatedAt\": \"1988-09-27T01:10:05.225Z\",\n      \"isInstantSettlement\": true,\n      \"legCount\": 5509,\n      \"recipient\": {\n        \"kind\": \"bank\",\n        \"accountId\": \"27b38112-4d98-78e2-e87b-707fd7230d48\",\n        \"accountNumber\": \"string\",\n        \"bankName\": \"string\",\n        \"name\": \"string\",\n        \"amounts\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"settledAt\": \"1969-01-11T05:40:04.072Z\",\n      \"source\": {\n        \"kind\": \"bank\",\n        \"accountId\": \"9b7a59bd-8bc7-168f-4829-8da1239ce561\",\n        \"accountNumber\": \"string\",\n        \"bankName\": \"string\",\n        \"name\": \"string\",\n        \"amounts\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"status\": \"string\",\n      \"type\": \"string\"\n    }\n  ],\n  \"nextCursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "282865a1-69e6-4d65-b5f7-c5e1d53bd659",
+              "name": "One or more request parameters are invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"parameter_invalid\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\",\n  \"context\": {\n    \"issues\": [\n      {\n        \"field\": \"string\",\n        \"message\": \"string\"\n      },\n      {\n        \"field\": \"string\",\n        \"message\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e8a490ff-bdfe-47bd-a29d-5463f9a05c1f",
+              "name": "Authentication is required.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"unauthorized\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\",\n  \"context\": {\n    \"reason\": \"missing_header\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "630d235e-75d0-4b9f-8a6d-345decd3039b",
+              "name": "The account is not eligible for the requested route direction.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"forbidden\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8a33a9c6-ddf8-4390-ad7e-e374444ed47c",
+              "name": "Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"not_found\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b00cad6c-defc-4bbc-998c-914428b47f76",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rate_limit_exceeded\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1aba9380-bad9-4c2a-aec4-d8792ff70b1b",
+              "name": "An unexpected error occurred.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"internal_error\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0c3988d9-204a-413a-8618-6920e0ee55d5",
+          "name": "Get a Transaction by ID",
+          "request": {
+            "name": "Get a Transaction by ID",
+            "description": {
+              "content": "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nRetrieve one settled transaction by id, with its per-leg breakdown. Each leg carries a `direction` (`FROM_AGORA` or `TO_AGORA`) and a rail-specific `detail` keyed by `type`: `token` (`transactionHash`), `wire` (Fedwire `imad`), `bookTransfer`, or `instantPayment` (`confirmationNumber`). A `404` means no such transaction exists for your organization.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v0",
+                "transactions",
+                ":txnId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "txnId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3e75da5c-e1c9-4704-bdde-3369df01b9f4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions",
+                    ":txnId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "txnId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"3dd89767-1044-37a3-364d-e303b35af4ee\",\n  \"initiatedAt\": \"1977-06-07T14:06:52.781Z\",\n  \"isInstantSettlement\": true,\n  \"legCount\": 9065,\n  \"recipient\": {\n    \"kind\": \"bank\",\n    \"accountId\": \"d0b0b8b1-f7c4-9eb2-11ba-f32dc0826065\",\n    \"accountNumber\": \"string\",\n    \"bankName\": \"string\",\n    \"name\": \"string\",\n    \"amounts\": [\n      {\n        \"amount\": \"string\",\n        \"currency\": \"string\"\n      },\n      {\n        \"amount\": \"string\",\n        \"currency\": \"string\"\n      }\n    ]\n  },\n  \"settledAt\": \"1950-09-19T18:44:33.227Z\",\n  \"source\": {\n    \"kind\": \"bank\",\n    \"accountId\": \"09121572-7606-c563-d442-522f88a6ff24\",\n    \"accountNumber\": \"string\",\n    \"bankName\": \"string\",\n    \"name\": \"string\",\n    \"amounts\": [\n      {\n        \"amount\": \"string\",\n        \"currency\": \"string\"\n      },\n      {\n        \"amount\": \"string\",\n        \"currency\": \"string\"\n      }\n    ]\n  },\n  \"status\": \"string\",\n  \"type\": \"string\",\n  \"legs\": [\n    {\n      \"id\": \"6b6986af-dfe9-bc29-c8a7-9c51815c57bd\",\n      \"amount\": \"string\",\n      \"currency\": \"string\",\n      \"detail\": {\n        \"type\": \"bookTransfer\",\n        \"confirmationNumber\": \"string\"\n      },\n      \"direction\": \"FROM_AGORA\",\n      \"occurredAt\": \"2015-11-18T00:29:18.595Z\",\n      \"recipient\": {\n        \"kind\": \"bank\",\n        \"accountId\": \"d9424d15-65b2-11df-b467-6838aa9094e6\",\n        \"accountNumber\": \"string\",\n        \"bankName\": \"string\",\n        \"name\": \"string\"\n      },\n      \"source\": {\n        \"kind\": \"bank\",\n        \"accountId\": \"1c2784c6-9e37-14f2-51b0-e0e1cd7c12cc\",\n        \"accountNumber\": \"string\",\n        \"bankName\": \"string\",\n        \"name\": \"string\"\n      }\n    },\n    {\n      \"id\": \"e862a137-f402-2db5-0281-5b33a4b22715\",\n      \"amount\": \"string\",\n      \"currency\": \"string\",\n      \"detail\": {\n        \"type\": \"bookTransfer\",\n        \"confirmationNumber\": \"string\"\n      },\n      \"direction\": \"TO_AGORA\",\n      \"occurredAt\": \"2023-11-19T02:23:27.631Z\",\n      \"recipient\": {\n        \"kind\": \"bank\",\n        \"accountId\": \"defb4606-5737-8711-5e0d-d1b2865695a3\",\n        \"accountNumber\": \"string\",\n        \"bankName\": \"string\",\n        \"name\": \"string\"\n      },\n      \"source\": {\n        \"kind\": \"bank\",\n        \"accountId\": \"efdbd60f-4c5b-ba80-85dc-2a014c77f1e9\",\n        \"accountNumber\": \"string\",\n        \"bankName\": \"string\",\n        \"name\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "358bca46-e48d-4212-97e2-294c6b66a6ff",
+              "name": "One or more request parameters are invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions",
+                    ":txnId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "txnId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"parameter_invalid\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\",\n  \"context\": {\n    \"issues\": [\n      {\n        \"field\": \"string\",\n        \"message\": \"string\"\n      },\n      {\n        \"field\": \"string\",\n        \"message\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6370273b-05b5-4b8e-a500-3084ec4668c2",
+              "name": "Authentication is required.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions",
+                    ":txnId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "txnId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"unauthorized\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\",\n  \"context\": {\n    \"reason\": \"missing_header\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8009aace-0cdc-4c56-96ab-9b9ffc91b8a3",
+              "name": "The account is not eligible for the requested route direction.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions",
+                    ":txnId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "txnId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"forbidden\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08d5dc56-7b0b-4a70-b8ec-661b25431a02",
+              "name": "Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions",
+                    ":txnId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "txnId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"not_found\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "33337c77-a861-44e1-a2a0-a59fae56da48",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions",
+                    ":txnId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "txnId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rate_limit_exceeded\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d3cf930-b81f-423d-9b5d-45f321c9e5df",
+              "name": "An unexpected error occurred.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v0",
+                    "transactions",
+                    ":txnId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "txnId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"internal_error\",\n  \"docs_url\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.agora.finance",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e2f96de1-cb0c-495c-b61a-14894a100a59",
+    "name": "Endpoints Accounts Transactions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

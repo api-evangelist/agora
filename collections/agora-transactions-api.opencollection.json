@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Endpoints Accounts Transactions API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agora.finance/v0/transactions",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nList your settled transactions, newest first, with cursor pagination. Each entry summarizes the `source` and `recipient`, the per-currency totals each side moved, and the `type` (`mint`, `redeem`, `bridge`, `reward`, `return`). `type` and `sta"
+        },
+        {
+          "info": {
+            "name": "Get a Transaction by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agora.finance/v0/transactions/:txnId",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "txnId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "<Callout intent=\"warning\">\n  The endpoints exposed here are currently in **Beta**! As we continue to build our initial offering, these endpoints may implement breaking changes. Be sure to check back for our change log regularly as a precaution.\n</Callout>\n\nRetrieve one settled transaction by id, with its per-leg breakdown. Each leg carries a `direction` (`FROM_AGORA` or `TO_AGORA`) and a rail-specific `detail` keyed by `type`: `token` (`transactionHash`), `wire` (Fedwire `imad`), `bookTransfer`,"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
