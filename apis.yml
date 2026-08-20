@@ -35,6 +35,15 @@ image: https://www.agora.finance/favicon.ico
 tags:
 - Company
 - Fintech
+- Stablecoins
+- Digital Dollar
+- Payments
+- Cryptocurrency
+- Blockchain
+- AUSD
+tags_raw:
+- Company
+- Fintech
 - Stablecoin
 - Digital Dollar
 - Payments
@@ -54,6 +63,8 @@ apis:
   humanURL: https://docs.agora.finance/api
   baseURL: https://api.agora.finance
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
@@ -72,6 +83,8 @@ apis:
   humanURL: https://docs.agora.finance/api
   baseURL: https://api.agora.finance
   tags:
+  - Authentication
+  tags_raw:
   - Auth
   properties:
   - type: OpenAPI
@@ -126,6 +139,8 @@ apis:
   humanURL: https://docs.agora.finance/api
   baseURL: https://api.agora.finance
   tags:
+  - Transaction
+  tags_raw:
   - Transactions
   properties:
   - type: OpenAPI
