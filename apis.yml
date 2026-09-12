@@ -167,6 +167,8 @@ apis:
   - type: Authentication
     url: authentication/agora-authentication.yml
 common:
+- type: Website
+  url: https://www.agora.finance/
 - type: AgenticAccess
   url: agentic-access/agora-agentic-access.yml
 - type: DomainSecurity
