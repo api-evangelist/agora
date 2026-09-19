@@ -45,6 +45,9 @@ specificationVersion: '0.23'
 created: '2026-07-17'
 modified: '2026-07-17'
 image: https://www.agora.finance/favicon.ico
+x-docs-platform: fern
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-09-17
 tags:
 - Company
 - Fintech
