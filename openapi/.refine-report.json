@@ -1,11 +1,7 @@
 {
   "provider": "agora",
   "sources": [
-    "agora-accounts-api-openapi.yml",
-    "agora-auth-api-openapi.yml",
-    "agora-metrics-api-openapi.yml",
-    "agora-routes-api-openapi.yml",
-    "agora-transactions-api-openapi.yml"
+    "_original/agora-openapi-original.yml"
   ],
   "outputs": [
     "agora-accounts-api-openapi.yml",
@@ -17,6 +13,21 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "agora-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "agora-openapi-original.yml: declared missing tag: Accounts",
+    "agora-openapi-original.yml: declared missing tag: Auth",
+    "agora-openapi-original.yml: declared missing tag: Metrics",
+    "agora-openapi-original.yml: declared missing tag: Routes",
+    "agora-openapi-original.yml: declared missing tag: Transactions",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "agora-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agora-auth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agora-metrics-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agora-routes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agora-transactions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
