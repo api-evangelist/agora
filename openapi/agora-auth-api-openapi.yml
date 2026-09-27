@@ -72,43 +72,6 @@ components:
       - docs_url
       - message
       title: ErrorResponse_503_service_unavailable
-    ErrorResponse429RateLimitExceededCode:
-      type: string
-      enum:
-      - rate_limit_exceeded
-      title: ErrorResponse429RateLimitExceededCode
-    ErrorResponse401UnauthorizedCode:
-      type: string
-      enum:
-      - unauthorized
-      title: ErrorResponse401UnauthorizedCode
-    auth_token_Response_200:
-      type: object
-      properties:
-        sessionJwt:
-          type: string
-          description: 'Short-lived session JWT. Send it as `Authorization: Bearer <sessionJwt>` on every authenticated endpoint.'
-      required:
-      - sessionJwt
-      title: auth_token_Response_200
-    ErrorResponse401UnauthorizedContext:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContextReason'
-      required:
-      - reason
-      title: ErrorResponse401UnauthorizedContext
-    ErrorResponse401UnauthorizedContextReason:
-      type: string
-      enum:
-      - invalid_token
-      - missing_claim
-      - missing_header
-      - token_expired
-      - token_revoked
-      - unknown_tenant
-      title: ErrorResponse401UnauthorizedContextReason
     ErrorResponse_401_unauthorized:
       type: object
       properties:
@@ -130,6 +93,21 @@ components:
       enum:
       - internal_error
       title: ErrorResponse500InternalErrorCode
+    ErrorResponse401UnauthorizedContextReason:
+      type: string
+      enum:
+      - invalid_token
+      - missing_claim
+      - missing_header
+      - token_expired
+      - token_revoked
+      - unknown_tenant
+      title: ErrorResponse401UnauthorizedContextReason
+    ErrorResponse503ServiceUnavailableCode:
+      type: string
+      enum:
+      - service_unavailable
+      title: ErrorResponse503ServiceUnavailableCode
     ErrorResponse_500_internal_error:
       type: object
       properties:
@@ -158,11 +136,33 @@ components:
       - docs_url
       - message
       title: ErrorResponse_429_rate_limit_exceeded
-    ErrorResponse503ServiceUnavailableCode:
+    auth_token_Response_200:
+      type: object
+      properties:
+        sessionJwt:
+          type: string
+          description: 'Short-lived session JWT. Send it as `Authorization: Bearer <sessionJwt>` on every authenticated endpoint.'
+      required:
+      - sessionJwt
+      title: auth_token_Response_200
+    ErrorResponse401UnauthorizedCode:
       type: string
       enum:
-      - service_unavailable
-      title: ErrorResponse503ServiceUnavailableCode
+      - unauthorized
+      title: ErrorResponse401UnauthorizedCode
+    ErrorResponse401UnauthorizedContext:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContextReason'
+      required:
+      - reason
+      title: ErrorResponse401UnauthorizedContext
+    ErrorResponse429RateLimitExceededCode:
+      type: string
+      enum:
+      - rate_limit_exceeded
+      title: ErrorResponse429RateLimitExceededCode
   securitySchemes:
     accessKey:
       type: http
