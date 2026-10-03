@@ -118,6 +118,61 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse_500_internal_error'
 components:
   schemas:
+    ErrorResponse_404_not_found:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse404NotFoundCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_404_not_found
+    ErrorResponse_500_internal_error:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse500InternalErrorCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_500_internal_error
+    ErrorResponse404NotFoundCode:
+      type: string
+      enum:
+      - not_found
+      title: ErrorResponse404NotFoundCode
+    V0MetricsGetResponsesContentApplicationJsonSchemaChainsItemsNetwork:
+      type: string
+      enum:
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - fraxtal
+      - gnosis
+      - immutable
+      - injective
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      - sui
+      description: Blockchain network identifier. Use this to filter or group supply data by chain. Values are stable; new networks may be added but existing ones will not be renamed.
+      title: V0MetricsGetResponsesContentApplicationJsonSchemaChainsItemsNetwork
     metrics_get_Response_200:
       type: object
       properties:
@@ -144,56 +199,6 @@ components:
       enum:
       - internal_error
       title: ErrorResponse500InternalErrorCode
-    ErrorResponse_500_internal_error:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse500InternalErrorCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_500_internal_error
-    ErrorResponse_404_not_found:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse404NotFoundCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_404_not_found
-    V0MetricsGetResponsesContentApplicationJsonSchemaChainsItemsNetwork:
-      type: string
-      enum:
-      - arbitrum
-      - avalanche
-      - base
-      - binance-smart-chain
-      - core
-      - ethereum
-      - fraxtal
-      - gnosis
-      - immutable
-      - injective
-      - katana
-      - mantle
-      - monad
-      - plume
-      - polygon-pos
-      - solana
-      - sui
-      description: Blockchain network identifier. Use this to filter or group supply data by chain. Values are stable; new networks may be added but existing ones will not be renamed.
-      title: V0MetricsGetResponsesContentApplicationJsonSchemaChainsItemsNetwork
     ErrorResponse_429_rate_limit_exceeded:
       type: object
       properties:
@@ -234,11 +239,6 @@ components:
       - network
       - totalSupply
       title: V0MetricsGetResponsesContentApplicationJsonSchemaChainsItems
-    ErrorResponse404NotFoundCode:
-      type: string
-      enum:
-      - not_found
-      title: ErrorResponse404NotFoundCode
   securitySchemes:
     accessKey:
       type: http

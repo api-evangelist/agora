@@ -147,148 +147,13 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse_500_internal_error'
 components:
   schemas:
-    ErrorResponse_404_not_found_transaction_not_found:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse404NotFoundTransactionNotFoundCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_404_not_found_transaction_not_found
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient1:
-      type: object
-      properties:
-        kind:
-          $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf1Kind'
-          description: 'Discriminator: the counterparty is a blockchain address.'
-        accountId:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
-        address:
-          type:
-          - string
-          - 'null'
-          description: On-chain address, EIP-55 checksummed for EVM. Public on-chain data, returned in full. Null when unknown.
-        chain:
-          type: string
-          description: Chain the address is on, as the public-API network id (e.g. `ethereum`, `base`). Non-public/historical chains fall back to the raw chain id. Treated as an open enum; tolerate unknown values.
-        name:
-          type:
-          - string
-          - 'null'
-          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
-        amounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf1AmountsItems'
-          description: Per-currency totals moved on this side of the transaction, one entry per currency.
-      required:
-      - kind
-      - accountId
-      - address
-      - chain
-      - name
-      - amounts
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient1
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource:
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient:
       oneOf:
-      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource0'
-      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource1'
-      description: The counterparty sending value on this leg.
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf0Kind:
-      type: string
-      enum:
-      - bank
-      description: 'Discriminator: the counterparty is a bank account.'
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf0Kind
-    ErrorResponse_500_internal_error:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse500InternalErrorCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_500_internal_error
-    ErrorResponse_404_not_found:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse404NotFoundCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_404_not_found
-    transactions_list_Response_200:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItems'
-          description: Page of transactions, newest first (by initiated time, tie-broken by id).
-        nextCursor:
-          type:
-          - string
-          - 'null'
-          description: Opaque cursor for the next page. Pass back verbatim as the `cursor` query param; null when no more results.
-      required:
-      - data
-      - nextCursor
-      title: transactions_list_Response_200
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf0Kind:
-      type: string
-      enum:
-      - bank
-      description: 'Discriminator: the counterparty is a bank account.'
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf0Kind
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDirection:
-      type: string
-      enum:
-      - FROM_AGORA
-      - TO_AGORA
-      description: 'Direction of value movement relative to Agora: `FROM_AGORA` (Agora → customer) or `TO_AGORA` (customer → Agora).'
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDirection
-    ErrorResponse401UnauthorizedContext:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContextReason'
-      required:
-      - reason
-      title: ErrorResponse401UnauthorizedContext
-    ErrorResponse400ParameterInvalidContextIssuesItems:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-      required:
-      - field
-      - message
-      title: ErrorResponse400ParameterInvalidContextIssuesItems
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf1AmountsItems:
+      - $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient0'
+      - $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient1'
+      description: The counterparty receiving value, with the totals it received.
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf1AmountsItems:
       type: object
       properties:
         amount:
@@ -301,12 +166,87 @@ components:
       - amount
       - currency
       description: A per-currency amount moved on one side of the transaction.
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf1AmountsItems
-    ErrorResponse429RateLimitExceededCode:
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf1AmountsItems
+    ErrorResponse_403_account_not_eligible_forbidden:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse403AccountNotEligibleForbiddenCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_403_account_not_eligible_forbidden
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipientOneOf0Kind:
       type: string
       enum:
-      - rate_limit_exceeded
-      title: ErrorResponse429RateLimitExceededCode
+      - bank
+      description: 'Discriminator: the counterparty is a bank account.'
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipientOneOf0Kind
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient0:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf0Kind'
+          description: 'Discriminator: the counterparty is a bank account.'
+        accountId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
+        accountNumber:
+          type:
+          - string
+          - 'null'
+          description: Bank account number. Null when unknown.
+        bankName:
+          type:
+          - string
+          - 'null'
+          description: Name of the financial institution, when known.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
+        amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf0AmountsItems'
+          description: Per-currency totals moved on this side of the transaction, one entry per currency.
+      required:
+      - kind
+      - accountId
+      - accountNumber
+      - bankName
+      - name
+      - amounts
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient0
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf0AmountsItems:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: Decimal amount as a string (avoids floating-point precision loss).
+        currency:
+          type: string
+          description: Currency code, e.g. `usd`, `ausd`, `usdc`.
+      required:
+      - amount
+      - currency
+      description: A per-currency amount moved on one side of the transaction.
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf0AmountsItems
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf1Kind:
+      type: string
+      enum:
+      - wallet
+      description: 'Discriminator: the counterparty is a blockchain address.'
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf1Kind
     V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient1:
       type: object
       properties:
@@ -339,6 +279,40 @@ components:
       - chain
       - name
       title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient1
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource:
+      oneOf:
+      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource0'
+      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource1'
+      description: The counterparty sending value on this leg.
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf1AmountsItems:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: Decimal amount as a string (avoids floating-point precision loss).
+        currency:
+          type: string
+          description: Currency code, e.g. `usd`, `ausd`, `usdc`.
+      required:
+      - amount
+      - currency
+      description: A per-currency amount moved on one side of the transaction.
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf1AmountsItems
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf1AmountsItems:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: Decimal amount as a string (avoids floating-point precision loss).
+        currency:
+          type: string
+          description: Currency code, e.g. `usd`, `ausd`, `usdc`.
+      required:
+      - amount
+      - currency
+      description: A per-currency amount moved on one side of the transaction.
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf1AmountsItems
     V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource1:
       type: object
       properties:
@@ -371,419 +345,46 @@ components:
       - chain
       - name
       title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource1
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf0AmountsItems:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: Decimal amount as a string (avoids floating-point precision loss).
-        currency:
-          type: string
-          description: Currency code, e.g. `usd`, `ausd`, `usdc`.
-      required:
-      - amount
-      - currency
-      description: A per-currency amount moved on one side of the transaction.
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf0AmountsItems
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource0:
-      type: object
-      properties:
-        kind:
-          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSourceOneOf0Kind'
-          description: 'Discriminator: the counterparty is a bank account.'
-        accountId:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
-        accountNumber:
-          type:
-          - string
-          - 'null'
-          description: Bank account number. Null when unknown.
-        bankName:
-          type:
-          - string
-          - 'null'
-          description: Name of the financial institution, when known.
-        name:
-          type:
-          - string
-          - 'null'
-          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
-      required:
-      - kind
-      - accountId
-      - accountNumber
-      - bankName
-      - name
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource0
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource1:
-      type: object
-      properties:
-        kind:
-          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf1Kind'
-          description: 'Discriminator: the counterparty is a blockchain address.'
-        accountId:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
-        address:
-          type:
-          - string
-          - 'null'
-          description: On-chain address, EIP-55 checksummed for EVM. Public on-chain data, returned in full. Null when unknown.
-        chain:
-          type: string
-          description: Chain the address is on, as the public-API network id (e.g. `ethereum`, `base`). Non-public/historical chains fall back to the raw chain id. Treated as an open enum; tolerate unknown values.
-        name:
-          type:
-          - string
-          - 'null'
-          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
-        amounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf1AmountsItems'
-          description: Per-currency totals moved on this side of the transaction, one entry per currency.
-      required:
-      - kind
-      - accountId
-      - address
-      - chain
-      - name
-      - amounts
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource1
-    ErrorResponse401UnauthorizedContextReason:
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf1Kind:
       type: string
       enum:
-      - invalid_token
-      - missing_claim
-      - missing_header
-      - token_expired
-      - token_revoked
-      - unknown_tenant
-      title: ErrorResponse401UnauthorizedContextReason
-    ErrorResponse500InternalErrorCode:
+      - wallet
+      description: 'Discriminator: the counterparty is a blockchain address.'
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf1Kind
+    ErrorResponse400ParameterInvalidCode:
       type: string
       enum:
-      - internal_error
-      title: ErrorResponse500InternalErrorCode
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource0:
+      - parameter_invalid
+      title: ErrorResponse400ParameterInvalidCode
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail0:
       type: object
       properties:
-        kind:
-          $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf0Kind'
-          description: 'Discriminator: the counterparty is a bank account.'
-        accountId:
+        type:
+          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf0Type'
+          description: 'Discriminator: the leg settled as an internal book transfer.'
+        confirmationNumber:
           type:
           - string
           - 'null'
-          format: uuid
-          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
-        accountNumber:
-          type:
-          - string
-          - 'null'
-          description: Bank account number. Null when unknown.
-        bankName:
-          type:
-          - string
-          - 'null'
-          description: Name of the financial institution, when known.
-        name:
-          type:
-          - string
-          - 'null'
-          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
-        amounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf0AmountsItems'
-          description: Per-currency totals moved on this side of the transaction, one entry per currency.
+          description: Book-transfer confirmation number. Null when not yet known.
       required:
-      - kind
-      - accountId
-      - accountNumber
-      - bankName
-      - name
-      - amounts
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource0
+      - type
+      - confirmationNumber
+      description: Book-transfer leg detail.
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail0
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDirection:
+      type: string
+      enum:
+      - FROM_AGORA
+      - TO_AGORA
+      description: 'Direction of value movement relative to Agora: `FROM_AGORA` (Agora → customer) or `TO_AGORA` (customer → Agora).'
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDirection
     ErrorResponse404NotFoundTransactionNotFoundCode:
       type: string
       enum:
       - not_found
       - transaction_not_found
       title: ErrorResponse404NotFoundTransactionNotFoundCode
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail:
-      oneOf:
-      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail0'
-      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail1'
-      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail2'
-      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail3'
-      description: Rail-specific identifiers for the leg, shaped by the settlement rail.
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource:
-      oneOf:
-      - $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource0'
-      - $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource1'
-      description: The counterparty sending value, with the totals it sent.
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf1Type:
-      type: string
-      enum:
-      - instantPayment
-      description: 'Discriminator: the leg settled over an instant-payment rail.'
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf1Type
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf0Type:
-      type: string
-      enum:
-      - bookTransfer
-      description: 'Discriminator: the leg settled as an internal book transfer.'
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf0Type
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf1Kind:
-      type: string
-      enum:
-      - wallet
-      description: 'Discriminator: the counterparty is a blockchain address.'
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf1Kind
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf0AmountsItems:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: Decimal amount as a string (avoids floating-point precision loss).
-        currency:
-          type: string
-          description: Currency code, e.g. `usd`, `ausd`, `usdc`.
-      required:
-      - amount
-      - currency
-      description: A per-currency amount moved on one side of the transaction.
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf0AmountsItems
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail2:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf2Type'
-          description: 'Discriminator: the leg settled on-chain.'
-        transactionHash:
-          type:
-          - string
-          - 'null'
-          description: On-chain transaction hash. Null when not yet known.
-      required:
-      - type
-      - transactionHash
-      description: On-chain (token) leg detail.
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail2
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf1AmountsItems:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: Decimal amount as a string (avoids floating-point precision loss).
-        currency:
-          type: string
-          description: Currency code, e.g. `usd`, `ausd`, `usdc`.
-      required:
-      - amount
-      - currency
-      description: A per-currency amount moved on one side of the transaction.
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf1AmountsItems
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient1:
-      type: object
-      properties:
-        kind:
-          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf1Kind'
-          description: 'Discriminator: the counterparty is a blockchain address.'
-        accountId:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
-        address:
-          type:
-          - string
-          - 'null'
-          description: On-chain address, EIP-55 checksummed for EVM. Public on-chain data, returned in full. Null when unknown.
-        chain:
-          type: string
-          description: Chain the address is on, as the public-API network id (e.g. `ethereum`, `base`). Non-public/historical chains fall back to the raw chain id. Treated as an open enum; tolerate unknown values.
-        name:
-          type:
-          - string
-          - 'null'
-          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
-        amounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf1AmountsItems'
-          description: Per-currency totals moved on this side of the transaction, one entry per currency.
-      required:
-      - kind
-      - accountId
-      - address
-      - chain
-      - name
-      - amounts
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient1
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf0AmountsItems:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: Decimal amount as a string (avoids floating-point precision loss).
-        currency:
-          type: string
-          description: Currency code, e.g. `usd`, `ausd`, `usdc`.
-      required:
-      - amount
-      - currency
-      description: A per-currency amount moved on one side of the transaction.
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf0AmountsItems
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient0:
-      type: object
-      properties:
-        kind:
-          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipientOneOf0Kind'
-          description: 'Discriminator: the counterparty is a bank account.'
-        accountId:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
-        accountNumber:
-          type:
-          - string
-          - 'null'
-          description: Bank account number. Null when unknown.
-        bankName:
-          type:
-          - string
-          - 'null'
-          description: Name of the financial institution, when known.
-        name:
-          type:
-          - string
-          - 'null'
-          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
-      required:
-      - kind
-      - accountId
-      - accountNumber
-      - bankName
-      - name
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient0
-    ErrorResponse403AccountNotEligibleForbiddenCode:
-      type: string
-      enum:
-      - account_not_eligible
-      - forbidden
-      title: ErrorResponse403AccountNotEligibleForbiddenCode
-    ErrorResponse_403_account_not_eligible_forbidden:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse403AccountNotEligibleForbiddenCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_403_account_not_eligible_forbidden
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource0:
-      type: object
-      properties:
-        kind:
-          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf0Kind'
-          description: 'Discriminator: the counterparty is a bank account.'
-        accountId:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
-        accountNumber:
-          type:
-          - string
-          - 'null'
-          description: Bank account number. Null when unknown.
-        bankName:
-          type:
-          - string
-          - 'null'
-          description: Name of the financial institution, when known.
-        name:
-          type:
-          - string
-          - 'null'
-          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
-        amounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf0AmountsItems'
-          description: Per-currency totals moved on this side of the transaction, one entry per currency.
-      required:
-      - kind
-      - accountId
-      - accountNumber
-      - bankName
-      - name
-      - amounts
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource0
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf0Kind:
-      type: string
-      enum:
-      - bank
-      description: 'Discriminator: the counterparty is a bank account.'
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf0Kind
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail1:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf1Type'
-          description: 'Discriminator: the leg settled over an instant-payment rail.'
-        confirmationNumber:
-          type:
-          - string
-          - 'null'
-          description: Instant-payment confirmation number. Null when not yet known.
-      required:
-      - type
-      - confirmationNumber
-      description: Instant-payment leg detail.
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail1
-    ErrorResponse_401_unauthorized:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse401UnauthorizedCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContext'
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_401_unauthorized
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient:
-      oneOf:
-      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient0'
-      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient1'
-      description: The counterparty receiving value, with the totals it received.
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient
     V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItems:
       type: object
       properties:
@@ -877,31 +478,17 @@ components:
       - legs
       description: A single settled transaction with its per-leg breakdown.
       title: transactions_getbyid_Response_200
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf1Kind:
-      type: string
-      enum:
-      - wallet
-      description: 'Discriminator: the counterparty is a blockchain address.'
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf1Kind
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf1AmountsItems:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: Decimal amount as a string (avoids floating-point precision loss).
-        currency:
-          type: string
-          description: Currency code, e.g. `usd`, `ausd`, `usdc`.
-      required:
-      - amount
-      - currency
-      description: A per-currency amount moved on one side of the transaction.
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf1AmountsItems
-    ErrorResponse_429_rate_limit_exceeded:
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource:
+      oneOf:
+      - $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource0'
+      - $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource1'
+      description: The counterparty sending value, with the totals it sent.
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource
+    ErrorResponse_500_internal_error:
       type: object
       properties:
         code:
-          $ref: '#/components/schemas/ErrorResponse429RateLimitExceededCode'
+          $ref: '#/components/schemas/ErrorResponse500InternalErrorCode'
         docs_url:
           type: string
         message:
@@ -910,71 +497,18 @@ components:
       - code
       - docs_url
       - message
-      title: ErrorResponse_429_rate_limit_exceeded
+      title: ErrorResponse_500_internal_error
     V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf2Type:
       type: string
       enum:
       - token
       description: 'Discriminator: the leg settled on-chain.'
       title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf2Type
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf1AmountsItems:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: Decimal amount as a string (avoids floating-point precision loss).
-        currency:
-          type: string
-          description: Currency code, e.g. `usd`, `ausd`, `usdc`.
-      required:
-      - amount
-      - currency
-      description: A per-currency amount moved on one side of the transaction.
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf1AmountsItems
-    ErrorResponse_400_parameter_invalid:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse400ParameterInvalidCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponse400ParameterInvalidContext'
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_400_parameter_invalid
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf3Type:
-      type: string
-      enum:
-      - wire
-      description: 'Discriminator: the leg settled over a wire transfer.'
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf3Type
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf0Kind:
-      type: string
-      enum:
-      - bank
-      description: 'Discriminator: the counterparty is a bank account.'
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf0Kind
-    ErrorResponse401UnauthorizedCode:
-      type: string
-      enum:
-      - unauthorized
-      title: ErrorResponse401UnauthorizedCode
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSourceOneOf1Kind:
-      type: string
-      enum:
-      - wallet
-      description: 'Discriminator: the counterparty is a blockchain address.'
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSourceOneOf1Kind
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource1:
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient1:
       type: object
       properties:
         kind:
-          $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf1Kind'
+          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf1Kind'
           description: 'Discriminator: the counterparty is a blockchain address.'
         accountId:
           type:
@@ -998,7 +532,7 @@ components:
         amounts:
           type: array
           items:
-            $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf1AmountsItems'
+            $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf1AmountsItems'
           description: Per-currency totals moved on this side of the transaction, one entry per currency.
       required:
       - kind
@@ -1007,18 +541,86 @@ components:
       - chain
       - name
       - amounts
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource1
-    ErrorResponse400ParameterInvalidCode:
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient1
+    ErrorResponse_404_not_found_transaction_not_found:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse404NotFoundTransactionNotFoundCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_404_not_found_transaction_not_found
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient:
+      oneOf:
+      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient0'
+      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient1'
+      description: The counterparty receiving value on this leg.
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient
+    ErrorResponse_429_rate_limit_exceeded:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse429RateLimitExceededCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_429_rate_limit_exceeded
+    ErrorResponse_401_unauthorized:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContext'
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_401_unauthorized
+    ErrorResponse401UnauthorizedContext:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContextReason'
+      required:
+      - reason
+      title: ErrorResponse401UnauthorizedContext
+    ErrorResponse401UnauthorizedContextReason:
       type: string
       enum:
-      - parameter_invalid
-      title: ErrorResponse400ParameterInvalidCode
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSourceOneOf0Kind:
+      - invalid_token
+      - missing_claim
+      - missing_header
+      - token_expired
+      - token_revoked
+      - unknown_tenant
+      title: ErrorResponse401UnauthorizedContextReason
+    ErrorResponse401UnauthorizedCode:
       type: string
       enum:
-      - bank
-      description: 'Discriminator: the counterparty is a bank account.'
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSourceOneOf0Kind
+      - unauthorized
+      title: ErrorResponse401UnauthorizedCode
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf1Kind:
+      type: string
+      enum:
+      - wallet
+      description: 'Discriminator: the counterparty is a blockchain address.'
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf1Kind
     V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail3:
       type: object
       properties:
@@ -1035,23 +637,6 @@ components:
       - imad
       description: Wire-transfer leg detail.
       title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail3
-    ErrorResponse404NotFoundCode:
-      type: string
-      enum:
-      - not_found
-      title: ErrorResponse404NotFoundCode
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf1Kind:
-      type: string
-      enum:
-      - wallet
-      description: 'Discriminator: the counterparty is a blockchain address.'
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf1Kind
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient:
-      oneOf:
-      - $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient0'
-      - $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient1'
-      description: The counterparty receiving value, with the totals it received.
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient
     V0TransactionsGetResponsesContentApplicationJsonSchemaDataItems:
       type: object
       properties:
@@ -1099,6 +684,279 @@ components:
       - type
       description: Settled-transaction summary. Fetch the detail endpoint with `id` for per-leg detail.
       title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItems
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf0AmountsItems:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: Decimal amount as a string (avoids floating-point precision loss).
+        currency:
+          type: string
+          description: Currency code, e.g. `usd`, `ausd`, `usdc`.
+      required:
+      - amount
+      - currency
+      description: A per-currency amount moved on one side of the transaction.
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf0AmountsItems
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail1:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf1Type'
+          description: 'Discriminator: the leg settled over an instant-payment rail.'
+        confirmationNumber:
+          type:
+          - string
+          - 'null'
+          description: Instant-payment confirmation number. Null when not yet known.
+      required:
+      - type
+      - confirmationNumber
+      description: Instant-payment leg detail.
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail1
+    ErrorResponse500InternalErrorCode:
+      type: string
+      enum:
+      - internal_error
+      title: ErrorResponse500InternalErrorCode
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipientOneOf1Kind:
+      type: string
+      enum:
+      - wallet
+      description: 'Discriminator: the counterparty is a blockchain address.'
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipientOneOf1Kind
+    transactions_list_Response_200:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItems'
+          description: Page of transactions, newest first (by initiated time, tie-broken by id).
+        nextCursor:
+          type:
+          - string
+          - 'null'
+          description: Opaque cursor for the next page. Pass back verbatim as the `cursor` query param; null when no more results.
+      required:
+      - data
+      - nextCursor
+      title: transactions_list_Response_200
+    ErrorResponse_404_not_found:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse404NotFoundCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_404_not_found
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf0Kind:
+      type: string
+      enum:
+      - bank
+      description: 'Discriminator: the counterparty is a bank account.'
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf0Kind
+    ErrorResponse404NotFoundCode:
+      type: string
+      enum:
+      - not_found
+      title: ErrorResponse404NotFoundCode
+    ErrorResponse_400_parameter_invalid:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse400ParameterInvalidCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponse400ParameterInvalidContext'
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_400_parameter_invalid
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf1Kind:
+      type: string
+      enum:
+      - wallet
+      description: 'Discriminator: the counterparty is a blockchain address.'
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf1Kind
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf1AmountsItems:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: Decimal amount as a string (avoids floating-point precision loss).
+        currency:
+          type: string
+          description: Currency code, e.g. `usd`, `ausd`, `usdc`.
+      required:
+      - amount
+      - currency
+      description: A per-currency amount moved on one side of the transaction.
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf1AmountsItems
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf0Kind:
+      type: string
+      enum:
+      - bank
+      description: 'Discriminator: the counterparty is a bank account.'
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf0Kind
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource0:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf0Kind'
+          description: 'Discriminator: the counterparty is a bank account.'
+        accountId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
+        accountNumber:
+          type:
+          - string
+          - 'null'
+          description: Bank account number. Null when unknown.
+        bankName:
+          type:
+          - string
+          - 'null'
+          description: Name of the financial institution, when known.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
+        amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf0AmountsItems'
+          description: Per-currency totals moved on this side of the transaction, one entry per currency.
+      required:
+      - kind
+      - accountId
+      - accountNumber
+      - bankName
+      - name
+      - amounts
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource0
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource1:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf1Kind'
+          description: 'Discriminator: the counterparty is a blockchain address.'
+        accountId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
+        address:
+          type:
+          - string
+          - 'null'
+          description: On-chain address, EIP-55 checksummed for EVM. Public on-chain data, returned in full. Null when unknown.
+        chain:
+          type: string
+          description: Chain the address is on, as the public-API network id (e.g. `ethereum`, `base`). Non-public/historical chains fall back to the raw chain id. Treated as an open enum; tolerate unknown values.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
+        amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf1AmountsItems'
+          description: Per-currency totals moved on this side of the transaction, one entry per currency.
+      required:
+      - kind
+      - accountId
+      - address
+      - chain
+      - name
+      - amounts
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource1
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient1:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf1Kind'
+          description: 'Discriminator: the counterparty is a blockchain address.'
+        accountId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
+        address:
+          type:
+          - string
+          - 'null'
+          description: On-chain address, EIP-55 checksummed for EVM. Public on-chain data, returned in full. Null when unknown.
+        chain:
+          type: string
+          description: Chain the address is on, as the public-API network id (e.g. `ethereum`, `base`). Non-public/historical chains fall back to the raw chain id. Treated as an open enum; tolerate unknown values.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
+        amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf1AmountsItems'
+          description: Per-currency totals moved on this side of the transaction, one entry per currency.
+      required:
+      - kind
+      - accountId
+      - address
+      - chain
+      - name
+      - amounts
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient1
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf3Type:
+      type: string
+      enum:
+      - wire
+      description: 'Discriminator: the leg settled over a wire transfer.'
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf3Type
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSourceOneOf0Kind:
+      type: string
+      enum:
+      - bank
+      description: 'Discriminator: the counterparty is a bank account.'
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSourceOneOf0Kind
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail:
+      oneOf:
+      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail0'
+      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail1'
+      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail2'
+      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail3'
+      description: Rail-specific identifiers for the leg, shaped by the settlement rail.
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource:
+      oneOf:
+      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource0'
+      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource1'
+      description: The counterparty sending value, with the totals it sent.
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf1Type:
+      type: string
+      enum:
+      - instantPayment
+      description: 'Discriminator: the leg settled over an instant-payment rail.'
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf1Type
     V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient0:
       type: object
       properties:
@@ -1139,56 +997,36 @@ components:
       - name
       - amounts
       title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient0
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource:
-      oneOf:
-      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource0'
-      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource1'
-      description: The counterparty sending value, with the totals it sent.
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSource
-    ErrorResponse400ParameterInvalidContext:
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf0AmountsItems:
       type: object
       properties:
-        issues:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponse400ParameterInvalidContextIssuesItems'
+        amount:
+          type: string
+          description: Decimal amount as a string (avoids floating-point precision loss).
+        currency:
+          type: string
+          description: Currency code, e.g. `usd`, `ausd`, `usdc`.
       required:
-      - issues
-      title: ErrorResponse400ParameterInvalidContext
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipientOneOf1Kind:
+      - amount
+      - currency
+      description: A per-currency amount moved on one side of the transaction.
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf0AmountsItems
+    ErrorResponse429RateLimitExceededCode:
       type: string
       enum:
-      - wallet
-      description: 'Discriminator: the counterparty is a blockchain address.'
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipientOneOf1Kind
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail0:
+      - rate_limit_exceeded
+      title: ErrorResponse429RateLimitExceededCode
+    ErrorResponse400ParameterInvalidContextIssuesItems:
       type: object
       properties:
-        type:
-          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf0Type'
-          description: 'Discriminator: the leg settled as an internal book transfer.'
-        confirmationNumber:
-          type:
-          - string
-          - 'null'
-          description: Book-transfer confirmation number. Null when not yet known.
+        field:
+          type: string
+        message:
+          type: string
       required:
-      - type
-      - confirmationNumber
-      description: Book-transfer leg detail.
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail0
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf1Kind:
-      type: string
-      enum:
-      - wallet
-      description: 'Discriminator: the counterparty is a blockchain address.'
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipientOneOf1Kind
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient:
-      oneOf:
-      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient0'
-      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient1'
-      description: The counterparty receiving value on this leg.
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient
+      - field
+      - message
+      title: ErrorResponse400ParameterInvalidContextIssuesItems
     V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf0AmountsItems:
       type: object
       properties:
@@ -1203,17 +1041,139 @@ components:
       - currency
       description: A per-currency amount moved on one side of the transaction.
       title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf0AmountsItems
-    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipientOneOf0Kind:
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource1:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf1Kind'
+          description: 'Discriminator: the counterparty is a blockchain address.'
+        accountId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
+        address:
+          type:
+          - string
+          - 'null'
+          description: On-chain address, EIP-55 checksummed for EVM. Public on-chain data, returned in full. Null when unknown.
+        chain:
+          type: string
+          description: Chain the address is on, as the public-API network id (e.g. `ethereum`, `base`). Non-public/historical chains fall back to the raw chain id. Treated as an open enum; tolerate unknown values.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
+        amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf1AmountsItems'
+          description: Per-currency totals moved on this side of the transaction, one entry per currency.
+      required:
+      - kind
+      - accountId
+      - address
+      - chain
+      - name
+      - amounts
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource1
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSourceOneOf1Kind:
+      type: string
+      enum:
+      - wallet
+      description: 'Discriminator: the counterparty is a blockchain address.'
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSourceOneOf1Kind
+    ErrorResponse403AccountNotEligibleForbiddenCode:
+      type: string
+      enum:
+      - account_not_eligible
+      - forbidden
+      title: ErrorResponse403AccountNotEligibleForbiddenCode
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient:
+      oneOf:
+      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient0'
+      - $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient1'
+      description: The counterparty receiving value, with the totals it received.
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaRecipient
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail2:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf2Type'
+          description: 'Discriminator: the leg settled on-chain.'
+        transactionHash:
+          type:
+          - string
+          - 'null'
+          description: On-chain transaction hash. Null when not yet known.
+      required:
+      - type
+      - transactionHash
+      description: On-chain (token) leg detail.
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetail2
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf0Type:
+      type: string
+      enum:
+      - bookTransfer
+      description: 'Discriminator: the leg settled as an internal book transfer.'
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsDetailOneOf0Type
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf0Kind:
       type: string
       enum:
       - bank
       description: 'Discriminator: the counterparty is a bank account.'
-      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipientOneOf0Kind
-    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient0:
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf0Kind
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient0:
       type: object
       properties:
         kind:
-          $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf0Kind'
+          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipientOneOf0Kind'
+          description: 'Discriminator: the counterparty is a bank account.'
+        accountId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
+        accountNumber:
+          type:
+          - string
+          - 'null'
+          description: Bank account number. Null when unknown.
+        bankName:
+          type:
+          - string
+          - 'null'
+          description: Name of the financial institution, when known.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
+      required:
+      - kind
+      - accountId
+      - accountNumber
+      - bankName
+      - name
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsRecipient0
+    ErrorResponse400ParameterInvalidContext:
+      type: object
+      properties:
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponse400ParameterInvalidContextIssuesItems'
+      required:
+      - issues
+      title: ErrorResponse400ParameterInvalidContext
+    V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource0:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf0Kind'
           description: 'Discriminator: the counterparty is a bank account.'
         accountId:
           type:
@@ -1239,7 +1199,7 @@ components:
         amounts:
           type: array
           items:
-            $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipientOneOf0AmountsItems'
+            $ref: '#/components/schemas/V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSourceOneOf0AmountsItems'
           description: Per-currency totals moved on this side of the transaction, one entry per currency.
       required:
       - kind
@@ -1248,7 +1208,47 @@ components:
       - bankName
       - name
       - amounts
-      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsRecipient0
+      title: V0TransactionsGetResponsesContentApplicationJsonSchemaDataItemsSource0
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf0Kind:
+      type: string
+      enum:
+      - bank
+      description: 'Discriminator: the counterparty is a bank account.'
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaSourceOneOf0Kind
+    V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource0:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSourceOneOf0Kind'
+          description: 'Discriminator: the counterparty is a bank account.'
+        accountId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: UUID of the customer account this counterparty maps to (same id as `/v0/accounts`), or null when the address is not a known account (e.g. the Agora side). Bank counterparties currently always return null; bank-to-account linkage is not derived yet.
+        accountNumber:
+          type:
+          - string
+          - 'null'
+          description: Bank account number. Null when unknown.
+        bankName:
+          type:
+          - string
+          - 'null'
+          description: Name of the financial institution, when known.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Display label for the counterparty. The Agora side of a leg is labelled `"Agora"`.
+      required:
+      - kind
+      - accountId
+      - accountNumber
+      - bankName
+      - name
+      title: V0TransactionsTxnIdGetResponsesContentApplicationJsonSchemaLegsItemsSource0
   securitySchemes:
     accessKey:
       type: http

@@ -58,11 +58,11 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse_503_service_unavailable'
 components:
   schemas:
-    ErrorResponse_503_service_unavailable:
+    ErrorResponse_500_internal_error:
       type: object
       properties:
         code:
-          $ref: '#/components/schemas/ErrorResponse503ServiceUnavailableCode'
+          $ref: '#/components/schemas/ErrorResponse500InternalErrorCode'
         docs_url:
           type: string
         message:
@@ -71,7 +71,12 @@ components:
       - code
       - docs_url
       - message
-      title: ErrorResponse_503_service_unavailable
+      title: ErrorResponse_500_internal_error
+    ErrorResponse503ServiceUnavailableCode:
+      type: string
+      enum:
+      - service_unavailable
+      title: ErrorResponse503ServiceUnavailableCode
     ErrorResponse_401_unauthorized:
       type: object
       properties:
@@ -88,40 +93,6 @@ components:
       - docs_url
       - message
       title: ErrorResponse_401_unauthorized
-    ErrorResponse500InternalErrorCode:
-      type: string
-      enum:
-      - internal_error
-      title: ErrorResponse500InternalErrorCode
-    ErrorResponse401UnauthorizedContextReason:
-      type: string
-      enum:
-      - invalid_token
-      - missing_claim
-      - missing_header
-      - token_expired
-      - token_revoked
-      - unknown_tenant
-      title: ErrorResponse401UnauthorizedContextReason
-    ErrorResponse503ServiceUnavailableCode:
-      type: string
-      enum:
-      - service_unavailable
-      title: ErrorResponse503ServiceUnavailableCode
-    ErrorResponse_500_internal_error:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse500InternalErrorCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_500_internal_error
     ErrorResponse_429_rate_limit_exceeded:
       type: object
       properties:
@@ -136,6 +107,43 @@ components:
       - docs_url
       - message
       title: ErrorResponse_429_rate_limit_exceeded
+    ErrorResponse401UnauthorizedContext:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContextReason'
+      required:
+      - reason
+      title: ErrorResponse401UnauthorizedContext
+    ErrorResponse_503_service_unavailable:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse503ServiceUnavailableCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_503_service_unavailable
+    ErrorResponse401UnauthorizedContextReason:
+      type: string
+      enum:
+      - invalid_token
+      - missing_claim
+      - missing_header
+      - token_expired
+      - token_revoked
+      - unknown_tenant
+      title: ErrorResponse401UnauthorizedContextReason
+    ErrorResponse401UnauthorizedCode:
+      type: string
+      enum:
+      - unauthorized
+      title: ErrorResponse401UnauthorizedCode
     auth_token_Response_200:
       type: object
       properties:
@@ -145,24 +153,16 @@ components:
       required:
       - sessionJwt
       title: auth_token_Response_200
-    ErrorResponse401UnauthorizedCode:
-      type: string
-      enum:
-      - unauthorized
-      title: ErrorResponse401UnauthorizedCode
-    ErrorResponse401UnauthorizedContext:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContextReason'
-      required:
-      - reason
-      title: ErrorResponse401UnauthorizedContext
     ErrorResponse429RateLimitExceededCode:
       type: string
       enum:
       - rate_limit_exceeded
       title: ErrorResponse429RateLimitExceededCode
+    ErrorResponse500InternalErrorCode:
+      type: string
+      enum:
+      - internal_error
+      title: ErrorResponse500InternalErrorCode
   securitySchemes:
     accessKey:
       type: http
