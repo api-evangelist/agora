@@ -118,11 +118,32 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse_500_internal_error'
 components:
   schemas:
-    ErrorResponse_404_not_found:
+    V0MetricsGetResponsesContentApplicationJsonSchemaChainsItems:
+      type: object
+      properties:
+        chainId:
+          type: string
+          description: CAIP-2 chain identifier (e.g. 'eip155:1' for Ethereum, 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp' for Solana). Use this for cross-referencing with DeFi Llama, CoinGecko, or on-chain data.
+        circulatingSupply:
+          type: string
+          description: AUSD in public circulation on this chain (total minus premint reserves), as a decimal string (e.g. `400000000.000000`). Use this for market cap calculations and exchange integrations.
+        network:
+          $ref: '#/components/schemas/V0MetricsGetResponsesContentApplicationJsonSchemaChainsItemsNetwork'
+          description: Blockchain network identifier. Use this to filter or group supply data by chain. Values are stable; new networks may be added but existing ones will not be renamed.
+        totalSupply:
+          type: string
+          description: Total AUSD minted on this chain, as a decimal string in human-readable units (not raw on-chain units, e.g. `500000000.000000`, not `500000000000000`). Use this when you need the gross supply figure for a single chain.
+      required:
+      - chainId
+      - circulatingSupply
+      - network
+      - totalSupply
+      title: V0MetricsGetResponsesContentApplicationJsonSchemaChainsItems
+    ErrorResponse_429_rate_limit_exceeded:
       type: object
       properties:
         code:
-          $ref: '#/components/schemas/ErrorResponse404NotFoundCode'
+          $ref: '#/components/schemas/ErrorResponse429RateLimitExceededCode'
         docs_url:
           type: string
         message:
@@ -131,7 +152,17 @@ components:
       - code
       - docs_url
       - message
-      title: ErrorResponse_404_not_found
+      title: ErrorResponse_429_rate_limit_exceeded
+    ErrorResponse429RateLimitExceededCode:
+      type: string
+      enum:
+      - rate_limit_exceeded
+      title: ErrorResponse429RateLimitExceededCode
+    ErrorResponse500InternalErrorCode:
+      type: string
+      enum:
+      - internal_error
+      title: ErrorResponse500InternalErrorCode
     ErrorResponse_500_internal_error:
       type: object
       properties:
@@ -146,11 +177,46 @@ components:
       - docs_url
       - message
       title: ErrorResponse_500_internal_error
+    metrics_get_Response_200:
+      type: object
+      properties:
+        chains:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0MetricsGetResponsesContentApplicationJsonSchemaChainsItems'
+          description: Per-chain supply breakdown. Only chains with a currently cached successful result are included; chains that have never succeeded (or are in a persistent outage on this pod) are omitted and cause `partial` to be true.
+        circulatingSupply:
+          type: string
+          description: Aggregate circulating AUSD supply across all chains, as a decimal string (e.g. `987654321.654321`). This is the sum of all per-chain circulatingSupply values. Omitted when `partial` is true.
+        partial:
+          type: boolean
+          description: True when one or more chains are missing from the response (cold start before a chain's first successful fetch, or a persistent chain outage). When true, aggregate `totalSupply` and `circulatingSupply` are **omitted**, since publishing a total that silently excludes chains would look like a large supply drop to market-data consumers.
+        totalSupply:
+          type: string
+          description: Aggregate total AUSD supply across all chains, as a decimal string (e.g. `1234567890.123456`). This is the sum of all per-chain totalSupply values. Omitted when `partial` is true.
+      required:
+      - chains
+      - partial
+      title: metrics_get_Response_200
     ErrorResponse404NotFoundCode:
       type: string
       enum:
       - not_found
       title: ErrorResponse404NotFoundCode
+    ErrorResponse_404_not_found:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse404NotFoundCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_404_not_found
     V0MetricsGetResponsesContentApplicationJsonSchemaChainsItemsNetwork:
       type: string
       enum:
@@ -173,72 +239,6 @@ components:
       - sui
       description: Blockchain network identifier. Use this to filter or group supply data by chain. Values are stable; new networks may be added but existing ones will not be renamed.
       title: V0MetricsGetResponsesContentApplicationJsonSchemaChainsItemsNetwork
-    metrics_get_Response_200:
-      type: object
-      properties:
-        chains:
-          type: array
-          items:
-            $ref: '#/components/schemas/V0MetricsGetResponsesContentApplicationJsonSchemaChainsItems'
-          description: Per-chain supply breakdown. Only chains with a currently cached successful result are included; chains that have never succeeded (or are in a persistent outage on this pod) are omitted and cause `partial` to be true.
-        circulatingSupply:
-          type: string
-          description: Aggregate circulating AUSD supply across all chains, as a decimal string (e.g. `987654321.654321`). This is the sum of all per-chain circulatingSupply values. Omitted when `partial` is true.
-        partial:
-          type: boolean
-          description: True when one or more chains are missing from the response (cold start before a chain's first successful fetch, or a persistent chain outage). When true, aggregate `totalSupply` and `circulatingSupply` are **omitted**, since publishing a total that silently excludes chains would look like a large supply drop to market-data consumers.
-        totalSupply:
-          type: string
-          description: Aggregate total AUSD supply across all chains, as a decimal string (e.g. `1234567890.123456`). This is the sum of all per-chain totalSupply values. Omitted when `partial` is true.
-      required:
-      - chains
-      - partial
-      title: metrics_get_Response_200
-    ErrorResponse500InternalErrorCode:
-      type: string
-      enum:
-      - internal_error
-      title: ErrorResponse500InternalErrorCode
-    ErrorResponse_429_rate_limit_exceeded:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse429RateLimitExceededCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_429_rate_limit_exceeded
-    ErrorResponse429RateLimitExceededCode:
-      type: string
-      enum:
-      - rate_limit_exceeded
-      title: ErrorResponse429RateLimitExceededCode
-    V0MetricsGetResponsesContentApplicationJsonSchemaChainsItems:
-      type: object
-      properties:
-        chainId:
-          type: string
-          description: CAIP-2 chain identifier (e.g. 'eip155:1' for Ethereum, 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp' for Solana). Use this for cross-referencing with DeFi Llama, CoinGecko, or on-chain data.
-        circulatingSupply:
-          type: string
-          description: AUSD in public circulation on this chain (total minus premint reserves), as a decimal string (e.g. `400000000.000000`). Use this for market cap calculations and exchange integrations.
-        network:
-          $ref: '#/components/schemas/V0MetricsGetResponsesContentApplicationJsonSchemaChainsItemsNetwork'
-          description: Blockchain network identifier. Use this to filter or group supply data by chain. Values are stable; new networks may be added but existing ones will not be renamed.
-        totalSupply:
-          type: string
-          description: Total AUSD minted on this chain, as a decimal string in human-readable units (not raw on-chain units, e.g. `500000000.000000`, not `500000000000000`). Use this when you need the gross supply figure for a single chain.
-      required:
-      - chainId
-      - circulatingSupply
-      - network
-      - totalSupply
-      title: V0MetricsGetResponsesContentApplicationJsonSchemaChainsItems
   securitySchemes:
     accessKey:
       type: http

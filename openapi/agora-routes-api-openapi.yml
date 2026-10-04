@@ -261,6 +261,108 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse_500_internal_error'
 components:
   schemas:
+    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems:
+      oneOf:
+      - $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems0'
+      - $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems1'
+      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems
+    V0RoutesPostRequestBodyContentApplicationJsonSchemaToChain:
+      type: string
+      enum:
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - immutable
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      description: Destination chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
+      title: V0RoutesPostRequestBodyContentApplicationJsonSchemaToChain
+    ErrorResponse400ParameterInvalidCode:
+      type: string
+      enum:
+      - parameter_invalid
+      title: ErrorResponse400ParameterInvalidCode
+    ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidContextIssuesItems:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+      required:
+      - field
+      - message
+      title: ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidContextIssuesItems
+    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf0SupportedCurrenciesItems:
+      type: string
+      enum:
+      - ausd
+      - stablecoin
+      - usd
+      - usdc
+      description: Currency identifier.
+      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf0SupportedCurrenciesItems
+    ErrorResponse_409_route_already_exists:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse409RouteAlreadyExistsCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponse409RouteAlreadyExistsContext'
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_409_route_already_exists
+    ErrorResponse_503_route_creation_unavailable:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse503RouteCreationUnavailableCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_503_route_creation_unavailable
+    V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf0SupportedCurrenciesItems:
+      type: string
+      enum:
+      - ausd
+      - stablecoin
+      - usd
+      - usdc
+      description: Currency identifier.
+      title: V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf0SupportedCurrenciesItems
+    V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1SupportedCurrenciesItems:
+      type: string
+      enum:
+      - ausd
+      - stablecoin
+      - usd
+      - usdc
+      description: Currency identifier.
+      title: V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1SupportedCurrenciesItems
+    ErrorResponse404NotFoundRouteNotFoundCode:
+      type: string
+      enum:
+      - not_found
+      - route_not_found
+      title: ErrorResponse404NotFoundRouteNotFoundCode
     V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItems0:
       type: object
       properties:
@@ -295,6 +397,74 @@ components:
       - routingNumber
       - supportedCurrencies
       title: V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItems0
+    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems1:
+      type: object
+      properties:
+        chain:
+          $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1Chain'
+          description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
+        depositAddress:
+          type: string
+        supportedCurrencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1SupportedCurrenciesItems'
+      required:
+      - chain
+      - depositAddress
+      - supportedCurrencies
+      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems1
+    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsToChain:
+      type: string
+      enum:
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - immutable
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
+      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsToChain
+    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaFromCurrency:
+      type: string
+      enum:
+      - ausd
+      - stablecoin
+      - usd
+      - usdc
+      description: Currency identifier.
+      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaFromCurrency
+    ErrorResponse404AccountNotFoundNotFoundCode:
+      type: string
+      enum:
+      - account_not_found
+      - not_found
+      title: ErrorResponse404AccountNotFoundNotFoundCode
+    V0RoutesPostResponsesContentApplicationJsonSchemaFromCurrency:
+      type: string
+      enum:
+      - ausd
+      - stablecoin
+      - usd
+      - usdc
+      description: Currency identifier.
+      title: V0RoutesPostResponsesContentApplicationJsonSchemaFromCurrency
+    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1SupportedCurrenciesItems:
+      type: string
+      enum:
+      - ausd
+      - stablecoin
+      - usd
+      - usdc
+      description: Currency identifier.
+      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1SupportedCurrenciesItems
     V0RoutesPostResponsesContentApplicationJsonSchemaToCurrency:
       type: string
       enum:
@@ -318,15 +488,299 @@ components:
       - docs_url
       - message
       title: ErrorResponse_403_account_not_eligible_forbidden
-    V0RoutesPostRequestBodyContentApplicationJsonSchemaFrom:
+    V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItems1:
+      type: object
+      properties:
+        chain:
+          $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1Chain'
+          description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
+        depositAddress:
+          type: string
+        supportedCurrencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1SupportedCurrenciesItems'
+      required:
+      - chain
+      - depositAddress
+      - supportedCurrencies
+      title: V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItems1
+    ErrorResponse_500_internal_error:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse500InternalErrorCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_500_internal_error
+    ErrorResponse503RouteCreationUnavailableCode:
+      type: string
+      enum:
+      - route_creation_unavailable
+      title: ErrorResponse503RouteCreationUnavailableCode
+    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsFrom:
       type: object
       properties:
         currency:
-          $ref: '#/components/schemas/V0RoutesPostRequestBodyContentApplicationJsonSchemaFromCurrency'
-          description: Source currency. `usd` (wire), `ausd`, or the `stablecoin` wildcard (any stablecoin deposit).
+          $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsFromCurrency'
+          description: Currency identifier.
       required:
       - currency
-      title: V0RoutesPostRequestBodyContentApplicationJsonSchemaFrom
+      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsFrom
+    ErrorResponse_400_parameter_invalid:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse400ParameterInvalidCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponse400ParameterInvalidContext'
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_400_parameter_invalid
+    ErrorResponse401UnauthorizedContext:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContextReason'
+      required:
+      - reason
+      title: ErrorResponse401UnauthorizedContext
+    ErrorResponse_404_not_found:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse404NotFoundCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_404_not_found
+    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaToCurrency:
+      type: string
+      enum:
+      - ausd
+      - stablecoin
+      - usd
+      - usdc
+      description: Currency identifier.
+      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaToCurrency
+    V0RoutesPostResponsesContentApplicationJsonSchemaTo:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaToCurrency'
+          description: Currency identifier.
+        accountId:
+          type: string
+          format: uuid
+        chain:
+          $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaToChain'
+          description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
+      required:
+      - currency
+      - accountId
+      title: V0RoutesPostResponsesContentApplicationJsonSchemaTo
+    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf1SupportedCurrenciesItems:
+      type: string
+      enum:
+      - ausd
+      - stablecoin
+      - usd
+      - usdc
+      description: Currency identifier.
+      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf1SupportedCurrenciesItems
+    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaFrom:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaFromCurrency'
+          description: Currency identifier.
+      required:
+      - currency
+      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaFrom
+    V0RoutesPostRequestBodyContentApplicationJsonSchemaFromCurrency:
+      type: string
+      enum:
+      - ausd
+      - stablecoin
+      - usd
+      description: Source currency. `usd` (wire), `ausd`, or the `stablecoin` wildcard (any stablecoin deposit).
+      title: V0RoutesPostRequestBodyContentApplicationJsonSchemaFromCurrency
+    V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1Chain:
+      type: string
+      enum:
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - immutable
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
+      title: V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1Chain
+    ErrorResponse409RouteAlreadyExistsContext:
+      type: object
+      properties:
+        routeId:
+          type: string
+          format: uuid
+      required:
+      - routeId
+      title: ErrorResponse409RouteAlreadyExistsContext
+    ErrorResponse401UnauthorizedCode:
+      type: string
+      enum:
+      - unauthorized
+      title: ErrorResponse401UnauthorizedCode
+    ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidCode:
+      type: string
+      enum:
+      - chain_unsupported
+      - currency_unsupported
+      - direction_unsupported
+      - parameter_invalid
+      title: ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidCode
+    ErrorResponse400ParameterInvalidContextIssuesItems:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+      required:
+      - field
+      - message
+      title: ErrorResponse400ParameterInvalidContextIssuesItems
+    ErrorResponse429RateLimitExceededCode:
+      type: string
+      enum:
+      - rate_limit_exceeded
+      title: ErrorResponse429RateLimitExceededCode
+    V0RoutesPostRequestBodyContentApplicationJsonSchemaTo:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/V0RoutesPostRequestBodyContentApplicationJsonSchemaToCurrency'
+          description: Destination currency. `ausd`, `usd`, or a specific stablecoin (e.g. `usdc`). Never the wildcard.
+        accountId:
+          type: string
+          format: uuid
+        chain:
+          $ref: '#/components/schemas/V0RoutesPostRequestBodyContentApplicationJsonSchemaToChain'
+          description: Destination chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
+      required:
+      - currency
+      - accountId
+      title: V0RoutesPostRequestBodyContentApplicationJsonSchemaTo
+    V0RoutesPostRequestBodyContentApplicationJsonSchemaToCurrency:
+      type: string
+      enum:
+      - ausd
+      - usd
+      - usdc
+      description: Destination currency. `ausd`, `usd`, or a specific stablecoin (e.g. `usdc`). Never the wildcard.
+      title: V0RoutesPostRequestBodyContentApplicationJsonSchemaToCurrency
+    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1Chain:
+      type: string
+      enum:
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - immutable
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
+      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1Chain
+    V0RoutesPostResponsesContentApplicationJsonSchemaFrom:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaFromCurrency'
+          description: Currency identifier.
+      required:
+      - currency
+      title: V0RoutesPostResponsesContentApplicationJsonSchemaFrom
+    V0RoutesGetResponsesContentApplicationJsonSchemaDataItems:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Deterministic route UUID; same canonical inputs always derive the same id.
+        name:
+          type:
+          - string
+          - 'null'
+          description: User-set label, or null when unset.
+        createdAt:
+          type: string
+          format: date-time
+        from:
+          $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsFrom'
+        to:
+          $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsTo'
+        instructions:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems'
+          description: 'Next-step instructions. Mint-fiat: one wire instruction with memo + beneficiary. On-chain directions: one deposit address per supported chain, alphabetical by chain.'
+      required:
+      - id
+      - createdAt
+      - from
+      - to
+      - instructions
+      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItems
+    ErrorResponse_400_chain_unsupported_currency_unsupported_direction_unsupported_parameter_invalid:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidContext'
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_400_chain_unsupported_currency_unsupported_direction_unsupported_parameter_invalid
+    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems:
+      oneOf:
+      - $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems0'
+      - $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems1'
+      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems
     V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems0:
       type: object
       properties:
@@ -375,206 +829,6 @@ components:
       - docs_url
       - message
       title: ErrorResponse_404_account_not_found_not_found
-    ErrorResponse_400_chain_unsupported_currency_unsupported_direction_unsupported_parameter_invalid:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidContext'
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_400_chain_unsupported_currency_unsupported_direction_unsupported_parameter_invalid
-    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsToChain:
-      type: string
-      enum:
-      - arbitrum
-      - avalanche
-      - base
-      - binance-smart-chain
-      - core
-      - ethereum
-      - immutable
-      - katana
-      - mantle
-      - monad
-      - plume
-      - polygon-pos
-      - solana
-      description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
-      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsToChain
-    routes_getbyid_Response_200:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Deterministic route UUID; same canonical inputs always derive the same id.
-        name:
-          type:
-          - string
-          - 'null'
-          description: User-set label, or null when unset.
-        createdAt:
-          type: string
-          format: date-time
-        from:
-          $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaFrom'
-        to:
-          $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaTo'
-        instructions:
-          type: array
-          items:
-            $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems'
-          description: 'Next-step instructions. Mint-fiat: one wire instruction with memo + beneficiary. On-chain directions: one deposit address per supported chain, alphabetical by chain.'
-      required:
-      - id
-      - createdAt
-      - from
-      - to
-      - instructions
-      title: routes_getbyid_Response_200
-    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems1:
-      type: object
-      properties:
-        chain:
-          $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1Chain'
-          description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
-        depositAddress:
-          type: string
-        supportedCurrencies:
-          type: array
-          items:
-            $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1SupportedCurrenciesItems'
-      required:
-      - chain
-      - depositAddress
-      - supportedCurrencies
-      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems1
-    V0RoutesPostResponsesContentApplicationJsonSchemaToChain:
-      type: string
-      enum:
-      - arbitrum
-      - avalanche
-      - base
-      - binance-smart-chain
-      - core
-      - ethereum
-      - immutable
-      - katana
-      - mantle
-      - monad
-      - plume
-      - polygon-pos
-      - solana
-      description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
-      title: V0RoutesPostResponsesContentApplicationJsonSchemaToChain
-    ErrorResponse_503_route_creation_unavailable:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse503RouteCreationUnavailableCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_503_route_creation_unavailable
-    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsFrom:
-      type: object
-      properties:
-        currency:
-          $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsFromCurrency'
-          description: Currency identifier.
-      required:
-      - currency
-      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsFrom
-    ErrorResponse400ParameterInvalidCode:
-      type: string
-      enum:
-      - parameter_invalid
-      title: ErrorResponse400ParameterInvalidCode
-    V0RoutesPostRequestBodyContentApplicationJsonSchemaToChain:
-      type: string
-      enum:
-      - arbitrum
-      - avalanche
-      - base
-      - binance-smart-chain
-      - core
-      - ethereum
-      - immutable
-      - katana
-      - mantle
-      - monad
-      - plume
-      - polygon-pos
-      - solana
-      description: Destination chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
-      title: V0RoutesPostRequestBodyContentApplicationJsonSchemaToChain
-    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1SupportedCurrenciesItems:
-      type: string
-      enum:
-      - ausd
-      - stablecoin
-      - usd
-      - usdc
-      description: Currency identifier.
-      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1SupportedCurrenciesItems
-    V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItems1:
-      type: object
-      properties:
-        chain:
-          $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1Chain'
-          description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
-        depositAddress:
-          type: string
-        supportedCurrencies:
-          type: array
-          items:
-            $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1SupportedCurrenciesItems'
-      required:
-      - chain
-      - depositAddress
-      - supportedCurrencies
-      title: V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItems1
-    ErrorResponse409RouteAlreadyExistsCode:
-      type: string
-      enum:
-      - route_already_exists
-      title: ErrorResponse409RouteAlreadyExistsCode
-    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf1SupportedCurrenciesItems:
-      type: string
-      enum:
-      - ausd
-      - stablecoin
-      - usd
-      - usdc
-      description: Currency identifier.
-      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf1SupportedCurrenciesItems
-    ErrorResponse_500_internal_error:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse500InternalErrorCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_500_internal_error
     V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf0SupportedCurrenciesItems:
       type: string
       enum:
@@ -584,77 +838,6 @@ components:
       - usdc
       description: Currency identifier.
       title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf0SupportedCurrenciesItems
-    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf1Chain:
-      type: string
-      enum:
-      - arbitrum
-      - avalanche
-      - base
-      - binance-smart-chain
-      - core
-      - ethereum
-      - immutable
-      - katana
-      - mantle
-      - monad
-      - plume
-      - polygon-pos
-      - solana
-      description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
-      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf1Chain
-    V0RoutesPostResponsesContentApplicationJsonSchemaFrom:
-      type: object
-      properties:
-        currency:
-          $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaFromCurrency'
-          description: Currency identifier.
-      required:
-      - currency
-      title: V0RoutesPostResponsesContentApplicationJsonSchemaFrom
-    ErrorResponse404NotFoundRouteNotFoundCode:
-      type: string
-      enum:
-      - not_found
-      - route_not_found
-      title: ErrorResponse404NotFoundRouteNotFoundCode
-    ErrorResponse503RouteCreationUnavailableCode:
-      type: string
-      enum:
-      - route_creation_unavailable
-      title: ErrorResponse503RouteCreationUnavailableCode
-    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaFromCurrency:
-      type: string
-      enum:
-      - ausd
-      - stablecoin
-      - usd
-      - usdc
-      description: Currency identifier.
-      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaFromCurrency
-    ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidCode:
-      type: string
-      enum:
-      - chain_unsupported
-      - currency_unsupported
-      - direction_unsupported
-      - parameter_invalid
-      title: ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidCode
-    ErrorResponse_401_unauthorized:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse401UnauthorizedCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContext'
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_401_unauthorized
     ErrorResponse_429_rate_limit_exceeded:
       type: object
       properties:
@@ -669,97 +852,6 @@ components:
       - docs_url
       - message
       title: ErrorResponse_429_rate_limit_exceeded
-    ErrorResponse401UnauthorizedContext:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContextReason'
-      required:
-      - reason
-      title: ErrorResponse401UnauthorizedContext
-    ErrorResponse401UnauthorizedCode:
-      type: string
-      enum:
-      - unauthorized
-      title: ErrorResponse401UnauthorizedCode
-    ErrorResponse401UnauthorizedContextReason:
-      type: string
-      enum:
-      - invalid_token
-      - missing_claim
-      - missing_header
-      - token_expired
-      - token_revoked
-      - unknown_tenant
-      title: ErrorResponse401UnauthorizedContextReason
-    ErrorResponse404AccountNotFoundNotFoundCode:
-      type: string
-      enum:
-      - account_not_found
-      - not_found
-      title: ErrorResponse404AccountNotFoundNotFoundCode
-    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems:
-      oneOf:
-      - $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems0'
-      - $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems1'
-      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems
-    V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1Chain:
-      type: string
-      enum:
-      - arbitrum
-      - avalanche
-      - base
-      - binance-smart-chain
-      - core
-      - ethereum
-      - immutable
-      - katana
-      - mantle
-      - monad
-      - plume
-      - polygon-pos
-      - solana
-      description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
-      title: V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1Chain
-    V0RoutesPostRequestBodyContentApplicationJsonSchemaTo:
-      type: object
-      properties:
-        currency:
-          $ref: '#/components/schemas/V0RoutesPostRequestBodyContentApplicationJsonSchemaToCurrency'
-          description: Destination currency. `ausd`, `usd`, or a specific stablecoin (e.g. `usdc`). Never the wildcard.
-        accountId:
-          type: string
-          format: uuid
-        chain:
-          $ref: '#/components/schemas/V0RoutesPostRequestBodyContentApplicationJsonSchemaToChain'
-          description: Destination chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
-      required:
-      - currency
-      - accountId
-      title: V0RoutesPostRequestBodyContentApplicationJsonSchemaTo
-    ErrorResponse_404_not_found_route_not_found:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse404NotFoundRouteNotFoundCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_404_not_found_route_not_found
-    V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1SupportedCurrenciesItems:
-      type: string
-      enum:
-      - ausd
-      - stablecoin
-      - usd
-      - usdc
-      description: Currency identifier.
-      title: V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1SupportedCurrenciesItems
     V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaToChain:
       type: string
       enum:
@@ -778,19 +870,24 @@ components:
       - solana
       description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
       title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaToChain
-    V0RoutesPostRequestBodyContentApplicationJsonSchemaFromCurrency:
+    V0RoutesPostResponsesContentApplicationJsonSchemaToChain:
       type: string
       enum:
-      - ausd
-      - stablecoin
-      - usd
-      description: Source currency. `usd` (wire), `ausd`, or the `stablecoin` wildcard (any stablecoin deposit).
-      title: V0RoutesPostRequestBodyContentApplicationJsonSchemaFromCurrency
-    ErrorResponse500InternalErrorCode:
-      type: string
-      enum:
-      - internal_error
-      title: ErrorResponse500InternalErrorCode
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - immutable
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
+      title: V0RoutesPostResponsesContentApplicationJsonSchemaToChain
     routes_get_Response_200:
       type: object
       properties:
@@ -808,156 +905,28 @@ components:
       - data
       - nextCursor
       title: routes_get_Response_200
-    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaFrom:
+    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems1:
       type: object
       properties:
-        currency:
-          $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaFromCurrency'
-          description: Currency identifier.
-      required:
-      - currency
-      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaFrom
-    ErrorResponse_404_not_found:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse404NotFoundCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_404_not_found
-    ErrorResponse404NotFoundCode:
-      type: string
-      enum:
-      - not_found
-      title: ErrorResponse404NotFoundCode
-    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsToCurrency:
-      type: string
-      enum:
-      - ausd
-      - stablecoin
-      - usd
-      - usdc
-      description: Currency identifier.
-      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsToCurrency
-    ErrorResponse_400_parameter_invalid:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse400ParameterInvalidCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponse400ParameterInvalidContext'
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_400_parameter_invalid
-    ErrorResponse_409_route_already_exists:
-      type: object
-      properties:
-        code:
-          $ref: '#/components/schemas/ErrorResponse409RouteAlreadyExistsCode'
-        docs_url:
-          type: string
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponse409RouteAlreadyExistsContext'
-      required:
-      - code
-      - docs_url
-      - message
-      title: ErrorResponse_409_route_already_exists
-    V0RoutesPostResponsesContentApplicationJsonSchemaTo:
-      type: object
-      properties:
-        currency:
-          $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaToCurrency'
-          description: Currency identifier.
-        accountId:
-          type: string
-          format: uuid
         chain:
-          $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaToChain'
+          $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf1Chain'
           description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
+        depositAddress:
+          type: string
+        supportedCurrencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf1SupportedCurrenciesItems'
       required:
-      - currency
-      - accountId
-      title: V0RoutesPostResponsesContentApplicationJsonSchemaTo
-    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1Chain:
-      type: string
-      enum:
-      - arbitrum
-      - avalanche
-      - base
-      - binance-smart-chain
-      - core
-      - ethereum
-      - immutable
-      - katana
-      - mantle
-      - monad
-      - plume
-      - polygon-pos
-      - solana
-      description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
-      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf1Chain
+      - chain
+      - depositAddress
+      - supportedCurrencies
+      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems1
     V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItems:
       oneOf:
       - $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItems0'
       - $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItems1'
       title: V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItems
-    routes_create_Response_201:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Deterministic route UUID; same canonical inputs always derive the same id.
-        name:
-          type:
-          - string
-          - 'null'
-          description: User-set label, or null when unset.
-        createdAt:
-          type: string
-          format: date-time
-        from:
-          $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaFrom'
-        to:
-          $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaTo'
-        instructions:
-          type: array
-          items:
-            $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItems'
-          description: 'Next-step instructions. Mint-fiat: one wire instruction with memo + beneficiary. On-chain directions: one deposit address per supported chain, alphabetical by chain.'
-      required:
-      - id
-      - createdAt
-      - from
-      - to
-      - instructions
-      title: routes_create_Response_201
-    ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidContextIssuesItems:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-      required:
-      - field
-      - message
-      title: ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidContextIssuesItems
     V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems0:
       type: object
       properties:
@@ -992,25 +961,31 @@ components:
       - routingNumber
       - supportedCurrencies
       title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems0
-    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf0SupportedCurrenciesItems:
+    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf1Chain:
       type: string
       enum:
-      - ausd
-      - stablecoin
-      - usd
-      - usdc
-      description: Currency identifier.
-      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItemsOneOf0SupportedCurrenciesItems
-    ErrorResponse409RouteAlreadyExistsContext:
-      type: object
-      properties:
-        routeId:
-          type: string
-          format: uuid
-      required:
-      - routeId
-      title: ErrorResponse409RouteAlreadyExistsContext
-    V0RoutesGetResponsesContentApplicationJsonSchemaDataItems:
+      - arbitrum
+      - avalanche
+      - base
+      - binance-smart-chain
+      - core
+      - ethereum
+      - immutable
+      - katana
+      - mantle
+      - monad
+      - plume
+      - polygon-pos
+      - solana
+      description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
+      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf1Chain
+    ErrorResponse403AccountNotEligibleForbiddenCode:
+      type: string
+      enum:
+      - account_not_eligible
+      - forbidden
+      title: ErrorResponse403AccountNotEligibleForbiddenCode
+    routes_create_Response_201:
       type: object
       properties:
         id:
@@ -1026,13 +1001,13 @@ components:
           type: string
           format: date-time
         from:
-          $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsFrom'
+          $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaFrom'
         to:
-          $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsTo'
+          $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaTo'
         instructions:
           type: array
           items:
-            $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems'
+            $ref: '#/components/schemas/V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItems'
           description: 'Next-step instructions. Mint-fiat: one wire instruction with memo + beneficiary. On-chain directions: one deposit address per supported chain, alphabetical by chain.'
       required:
       - id
@@ -1040,45 +1015,61 @@ components:
       - from
       - to
       - instructions
-      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItems
-    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems:
-      oneOf:
-      - $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems0'
-      - $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems1'
-      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems
-    ErrorResponse429RateLimitExceededCode:
-      type: string
-      enum:
-      - rate_limit_exceeded
-      title: ErrorResponse429RateLimitExceededCode
-    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems1:
+      title: routes_create_Response_201
+    ErrorResponse_401_unauthorized:
       type: object
       properties:
-        chain:
-          $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf1Chain'
-          description: Route chain (kebab-case). Restricted to chains Agora supports for routes (EVM + Solana).
-        depositAddress:
-          type: string
-        supportedCurrencies:
-          type: array
-          items:
-            $ref: '#/components/schemas/V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItemsOneOf1SupportedCurrenciesItems'
-      required:
-      - chain
-      - depositAddress
-      - supportedCurrencies
-      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsInstructionsItems1
-    ErrorResponse400ParameterInvalidContextIssuesItems:
-      type: object
-      properties:
-        field:
+        code:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedCode'
+        docs_url:
           type: string
         message:
           type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponse401UnauthorizedContext'
       required:
-      - field
+      - code
+      - docs_url
       - message
-      title: ErrorResponse400ParameterInvalidContextIssuesItems
+      title: ErrorResponse_401_unauthorized
+    ErrorResponse500InternalErrorCode:
+      type: string
+      enum:
+      - internal_error
+      title: ErrorResponse500InternalErrorCode
+    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsToCurrency:
+      type: string
+      enum:
+      - ausd
+      - stablecoin
+      - usd
+      - usdc
+      description: Currency identifier.
+      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsToCurrency
+    ErrorResponse400ParameterInvalidContext:
+      type: object
+      properties:
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponse400ParameterInvalidContextIssuesItems'
+      required:
+      - issues
+      title: ErrorResponse400ParameterInvalidContext
+    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsFromCurrency:
+      type: string
+      enum:
+      - ausd
+      - stablecoin
+      - usd
+      - usdc
+      description: Currency identifier.
+      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsFromCurrency
+    ErrorResponse409RouteAlreadyExistsCode:
+      type: string
+      enum:
+      - route_already_exists
+      title: ErrorResponse409RouteAlreadyExistsCode
     ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidContext:
       type: object
       properties:
@@ -1089,14 +1080,11 @@ components:
       required:
       - issues
       title: ErrorResponse400ChainUnsupportedCurrencyUnsupportedDirectionUnsupportedParameterInvalidContext
-    V0RoutesPostRequestBodyContentApplicationJsonSchemaToCurrency:
+    ErrorResponse404NotFoundCode:
       type: string
       enum:
-      - ausd
-      - usd
-      - usdc
-      description: Destination currency. `ausd`, `usd`, or a specific stablecoin (e.g. `usdc`). Never the wildcard.
-      title: V0RoutesPostRequestBodyContentApplicationJsonSchemaToCurrency
+      - not_found
+      title: ErrorResponse404NotFoundCode
     V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsTo:
       type: object
       properties:
@@ -1113,49 +1101,15 @@ components:
       - currency
       - accountId
       title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsTo
-    ErrorResponse403AccountNotEligibleForbiddenCode:
-      type: string
-      enum:
-      - account_not_eligible
-      - forbidden
-      title: ErrorResponse403AccountNotEligibleForbiddenCode
-    V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsFromCurrency:
-      type: string
-      enum:
-      - ausd
-      - stablecoin
-      - usd
-      - usdc
-      description: Currency identifier.
-      title: V0RoutesGetResponsesContentApplicationJsonSchemaDataItemsFromCurrency
-    V0RoutesPostResponsesContentApplicationJsonSchemaFromCurrency:
-      type: string
-      enum:
-      - ausd
-      - stablecoin
-      - usd
-      - usdc
-      description: Currency identifier.
-      title: V0RoutesPostResponsesContentApplicationJsonSchemaFromCurrency
-    V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaToCurrency:
-      type: string
-      enum:
-      - ausd
-      - stablecoin
-      - usd
-      - usdc
-      description: Currency identifier.
-      title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaToCurrency
-    ErrorResponse400ParameterInvalidContext:
+    V0RoutesPostRequestBodyContentApplicationJsonSchemaFrom:
       type: object
       properties:
-        issues:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponse400ParameterInvalidContextIssuesItems'
+        currency:
+          $ref: '#/components/schemas/V0RoutesPostRequestBodyContentApplicationJsonSchemaFromCurrency'
+          description: Source currency. `usd` (wire), `ausd`, or the `stablecoin` wildcard (any stablecoin deposit).
       required:
-      - issues
-      title: ErrorResponse400ParameterInvalidContext
+      - currency
+      title: V0RoutesPostRequestBodyContentApplicationJsonSchemaFrom
     V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaTo:
       type: object
       properties:
@@ -1172,15 +1126,61 @@ components:
       - currency
       - accountId
       title: V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaTo
-    V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf0SupportedCurrenciesItems:
+    ErrorResponse401UnauthorizedContextReason:
       type: string
       enum:
-      - ausd
-      - stablecoin
-      - usd
-      - usdc
-      description: Currency identifier.
-      title: V0RoutesPostResponsesContentApplicationJsonSchemaInstructionsItemsOneOf0SupportedCurrenciesItems
+      - invalid_token
+      - missing_claim
+      - missing_header
+      - token_expired
+      - token_revoked
+      - unknown_tenant
+      title: ErrorResponse401UnauthorizedContextReason
+    routes_getbyid_Response_200:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Deterministic route UUID; same canonical inputs always derive the same id.
+        name:
+          type:
+          - string
+          - 'null'
+          description: User-set label, or null when unset.
+        createdAt:
+          type: string
+          format: date-time
+        from:
+          $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaFrom'
+        to:
+          $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaTo'
+        instructions:
+          type: array
+          items:
+            $ref: '#/components/schemas/V0RoutesRouteIdGetResponsesContentApplicationJsonSchemaInstructionsItems'
+          description: 'Next-step instructions. Mint-fiat: one wire instruction with memo + beneficiary. On-chain directions: one deposit address per supported chain, alphabetical by chain.'
+      required:
+      - id
+      - createdAt
+      - from
+      - to
+      - instructions
+      title: routes_getbyid_Response_200
+    ErrorResponse_404_not_found_route_not_found:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorResponse404NotFoundRouteNotFoundCode'
+        docs_url:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - docs_url
+      - message
+      title: ErrorResponse_404_not_found_route_not_found
   securitySchemes:
     accessKey:
       type: http
