@@ -1,0 +1,12 @@
+{
+ "url": "https://docs.agora.finance/openapi.json",
+ "requested_url": "https://docs.agora.finance/openapi.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 144922,
+ "sha256": "3a903793878b082068eb4361f42b1edb77ce69907f7ee9167072334ca2b947f4",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.923), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
