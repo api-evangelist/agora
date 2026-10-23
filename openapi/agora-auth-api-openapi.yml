@@ -172,3 +172,9 @@ components:
       type: http
       scheme: bearer
       description: 'Session JWT from POST /v0/auth/token, sent as `Authorization: Bearer <sessionJwt>`.'
+x-provenance:
+  method: harvested
+  publisher: Agora
+  source: https://docs.agora.finance/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
